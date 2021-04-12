@@ -5,11 +5,8 @@ import android.os.Bundle
 import android.widget.FrameLayout
 import androidx.fragment.app.Fragment
 import androidx.navigation.NavController
-import androidx.navigation.Navigation
 import com.mystats.mystats.BaseFragmentInterface
 import com.mystats.mystats.R
-import com.mystats.mystats.signing.FragmentSignUp
-import com.mystats.mystats.signing.FragmentStartApp
 
 class MainActivity : AppCompatActivity(), BaseFragmentInterface  {
 

@@ -1,4 +1,4 @@
-package com.mystats.mystats.signing
+package com.mystats.mystats.sign_up
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -8,9 +8,13 @@ import android.view.ViewGroup
 import com.mystats.mystats.R
 
 
-class FragmentSignIn : Fragment() {
 
+class FragmentSignUp : Fragment() {
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+
+        super.onViewCreated(view, savedInstanceState)
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,

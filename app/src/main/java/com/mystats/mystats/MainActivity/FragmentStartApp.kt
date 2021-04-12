@@ -1,4 +1,4 @@
-package com.mystats.mystats.signing
+package com.mystats.mystats.MainActivity
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -6,19 +6,21 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
-import androidx.navigation.NavController
-import androidx.navigation.Navigation
-import androidx.navigation.fragment.NavHostFragment.findNavController
 import androidx.navigation.fragment.findNavController
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.FirebaseUser
 import com.mystats.mystats.R
 
 
 class FragmentStartApp() : Fragment(), View.OnClickListener {
     private lateinit var buttonSignUp: Button
     private lateinit var buttonSignIn: Button
-
-    init {
-
+    override fun onStart() {
+        super.onStart()
+        val user : FirebaseUser? = FirebaseAuth.getInstance().currentUser
+        if (user != null){
+            //findNavController().navigate(R.id.action_fragmentStartApp_to_fragmentSignUp)
+        }
     }
 
     override fun onCreateView(
