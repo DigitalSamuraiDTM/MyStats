@@ -19,7 +19,9 @@ class FragmentStartApp() : Fragment(), View.OnClickListener {
         super.onStart()
         val user : FirebaseUser? = FirebaseAuth.getInstance().currentUser
         if (user != null){
-            //findNavController().navigate(R.id.action_fragmentStartApp_to_fragmentSignUp)
+            if (user.isEmailVerified){
+                findNavController().navigate(R.id.action_fragmentStartApp_to_myStatistics)
+            }
         }
     }
 
@@ -50,4 +52,5 @@ class FragmentStartApp() : Fragment(), View.OnClickListener {
 
         }
     }
+
 }

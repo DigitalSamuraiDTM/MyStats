@@ -29,26 +29,34 @@
             app:destination="@id/myStatistics" />
     </fragment>
     <fragment
-        android:id="@+id/fragmentSignUp"
-        android:name="com.mystats.mystats.sign_up.FragmentSignUp"
-        android:label="fragment_sign_up"
-        tools:layout="@layout/fragment_sign_in" >
-        <action
-            android:id="@+id/action_fragmentSignUp_to_myStatistics"
-            app:destination="@id/myStatistics" />
-    </fragment>
-    <fragment
         android:id="@+id/fragmentSignIn"
         android:name="com.mystats.mystats.sign_in.FragmentSignIn"
         android:label="fragment_sign_in"
-        tools:layout="@layout/fragment_sign_up" >
+        tools:layout="@layout/fragment_sign_in">
         <action
             android:id="@+id/action_fragmentSignIn_to_myStatistics"
-            app:destination="@id/myStatistics" />
+            app:destination="@id/myStatistics"
+            app:enterAnim="@anim/slide_to_center_from_right"
+            app:exitAnim="@anim/slide_to_left_from_center"
+            app:popEnterAnim="@anim/slide_from_left_to_center"
+            app:popExitAnim="@anim/slide_from_center_to_right" />
     </fragment>
     <fragment
         android:id="@+id/myStatistics"
         android:name="com.mystats.mystats.my_statistics.MyStatistics"
         android:label="fragment_my_statistics2"
-        tools:layout="@layout/fragment_my_statistics2" />
+        tools:layout="@layout/fragment_my_statistics" />
+    <fragment
+        android:id="@+id/fragmentSignUp"
+        android:name="com.mystats.mystats.sign_up.FragmentSignUp"
+        android:label="fragment_sign_up"
+        tools:layout="@layout/fragment_sign_up" >
+        <action
+            android:id="@+id/action_fragmentSignUp_to_fragmentSignIn"
+            app:destination="@id/fragmentSignIn"
+            app:enterAnim="@anim/slide_to_center_from_right"
+            app:exitAnim="@anim/slide_to_left_from_center"
+            app:popEnterAnim="@anim/slide_from_left_to_center"
+            app:popExitAnim="@anim/slide_from_center_to_right" />
+    </fragment>
 </navigation>

@@ -5,10 +5,9 @@ import android.os.Bundle
 import android.widget.FrameLayout
 import androidx.fragment.app.Fragment
 import androidx.navigation.NavController
-import com.mystats.mystats.BaseFragmentInterface
 import com.mystats.mystats.R
 
-class MainActivity : AppCompatActivity(), BaseFragmentInterface  {
+class MainActivity : AppCompatActivity()  {
 
     private lateinit var hostFrame : FrameLayout
     private lateinit var fragmentSignUp: Fragment
