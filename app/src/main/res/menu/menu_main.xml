@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/myStatistics"
+        android:icon="@drawable/ic_home_black"
+        android:title="Stats" />
+    <item
+        android:id="@+id/fragmentBrowsing"
+        android:icon="@drawable/ic_language_black"
+        android:title="Browse" />
+    <item
+        android:id="@+id/fragment_profile"
+        android:icon="@drawable/ic_person_black"
+        android:title="Profile" />
+</menu>

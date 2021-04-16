@@ -59,4 +59,14 @@
             app:popEnterAnim="@anim/slide_from_left_to_center"
             app:popExitAnim="@anim/slide_from_center_to_right" />
     </fragment>
+    <fragment
+        android:id="@+id/fragmentBrowsing"
+        android:name="com.mystats.mystats.browsing.FragmentBrowsin"
+        android:label="fragment_browsing"
+        tools:layout="@layout/fragment_browsin" />
+    <fragment
+        android:id="@+id/fragment_profile"
+        android:name="com.mystats.mystats.profile.Fragment_profile"
+        android:label="fragment_profile"
+        tools:layout="@layout/fragment_profile" />
 </navigation>

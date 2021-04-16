@@ -7,6 +7,7 @@
     tools:context=".sign_up.FragmentSignUp" >
 
     <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/fr_sign_in_loading"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:visibility="gone"
@@ -35,6 +36,7 @@
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/fr_sign_in_signing"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:focusableInTouchMode="true"

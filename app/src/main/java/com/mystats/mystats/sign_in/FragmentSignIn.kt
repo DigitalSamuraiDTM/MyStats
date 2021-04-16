@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.navigation.fragment.findNavController
 import com.google.firebase.auth.FirebaseAuth
 import com.mystats.mystats.ErrorsSigning
@@ -20,6 +21,8 @@ class FragmentSignIn : Fragment() {
     private lateinit var editEmail: EditText
     private lateinit var editPass: EditText
     private lateinit var buttonSignIn: Button
+    private lateinit var layLoading : ConstraintLayout
+    private lateinit var layData : ConstraintLayout
 
     override fun onCreate(savedInstanceState: Bundle?) {
         presenter = PresenterSignIn(this)
@@ -37,6 +40,8 @@ class FragmentSignIn : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         editEmail = view.findViewById(R.id.fr_sign_in_email)
         editPass = view.findViewById(R.id.fr_sign_in_pass)
+        layLoading  = view.findViewById(R.id.fr_sign_in_loading)
+        layData  = view.findViewById(R.id.fr_sign_in_signing)
         if (arguments?.getString("m") != null && arguments?.getString("p") != null){
 
             editEmail.setText(arguments?.getString("m"))
@@ -74,9 +79,11 @@ class FragmentSignIn : Fragment() {
 
     }
     public fun showLoading(){
-
+        layData.visibility = View.INVISIBLE
+        layLoading.visibility = View.VISIBLE
     }
     public fun hideLoading(){
-
+        layData.visibility = View.VISIBLE
+        layLoading.visibility = View.INVISIBLE
     }
 }
