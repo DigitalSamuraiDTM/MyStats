@@ -16,7 +16,7 @@
     </style>
 
 
-    <style name="Login" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+    <style name="Login" parent="Theme.MaterialComponents.DayNight.DarkActionBar">
         <item name="colorPrimary">@color/purple_500</item>
         <item name="colorPrimaryVariant">@color/purple_700</item>
         <item name="colorOnPrimary">@color/white</item>
@@ -29,6 +29,22 @@
         <item name="colorOnSecondary">@color/black</item>
         <item name="android:textColor">@color/black</item>
 <!--        <item name="fontFamily">@font/archivo_narrow</item>-->
+        <!-- Status bar color. -->
+        <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimaryVariant</item>
+    </style>
+    <style name="MyStats" parent="Theme.MaterialComponents.DayNight.DarkActionBar">
+        <item name="colorPrimary">@color/purple_500</item>
+        <item name="colorPrimaryVariant">@color/purple_700</item>
+        <item name="colorOnPrimary">@color/white</item>
+        <!-- Secondary brand color. -->
+        <!--        <item name="android:navigationBarColor">@color/black</item>-->
+        <item name="titleTextColor">@color/white</item>
+        <item name="android:editTextColor">@color/black</item>
+        <item name="colorSecondary">@color/teal_200</item>
+        <item name="colorSecondaryVariant">@color/teal_700</item>
+        <item name="colorOnSecondary">@color/black</item>
+        <item name="android:textColor">@color/black</item>
+        <!--        <item name="fontFamily">@font/archivo_narrow</item>-->
         <!-- Status bar color. -->
         <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimaryVariant</item>
     </style>

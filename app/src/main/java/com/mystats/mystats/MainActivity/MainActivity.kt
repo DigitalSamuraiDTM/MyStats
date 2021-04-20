@@ -23,6 +23,7 @@ class MainActivity : AppCompatActivity()  {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        supportActionBar?.hide()
         setContentView(R.layout.activity_main)
         init()
         navView = findViewById(R.id.act_main_bottonNavView)
@@ -41,8 +42,10 @@ class MainActivity : AppCompatActivity()  {
     }
     public fun EnableBars(enable : Boolean){
         if (enable){
+            supportActionBar?.show()
             navView.visibility = View.VISIBLE
         } else{
+            supportActionBar?.hide()
             navView.visibility = View.GONE
 
         }

@@ -3,12 +3,13 @@ package com.mystats.mystats.my_statistics
 import android.content.Context
 import android.os.Bundle
 import android.util.Log
+import android.view.*
 import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.widget.Button
+import android.widget.ImageButton
 import android.widget.Toast
 import androidx.appcompat.widget.Toolbar
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.navigation.fragment.findNavController
 import com.google.android.gms.tasks.OnCompleteListener
 import com.google.android.gms.tasks.OnSuccessListener
@@ -23,13 +24,40 @@ import com.mystats.mystats.MainActivity.MainActivity
 import com.mystats.mystats.R
 
 
-class FragmentMyStatistics : Fragment() {
+class FragmentMyStatistics : Fragment(), View.OnClickListener {
+
+    private lateinit var buttonNewRecord : Button
+    private lateinit var buttonSearchInStats : ImageButton
+    private lateinit var buttonInfoStats : ImageButton
+    private lateinit var buttonNewStats : Button
+    private lateinit var layoutLoading : ConstraintLayout
+    private lateinit var layoutNewStats : ConstraintLayout
+    private lateinit var layoutMainData : ConstraintLayout
 
 
-    override fun onAttach(context: Context) {
+
+    override fun onResume() {
         (activity as MainActivity).EnableBars(true);
-        //findNavController().popBackStack()
-        super.onAttach(context)
+
+        super.onResume()
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when(item.itemId){
+            R.id.item_myStats_newStats->{
+                Log.d("FIRESTORE","AWDAWD")
+            }
+            R.id.item_myStats_settings->{
+                Log.d("FIRESTORE","OBEME")
+
+            }
+        }
+        return super.onOptionsItemSelected(item)
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        inflater.inflate(R.menu.menu_my_stats,menu)
+        super.onCreateOptionsMenu(menu, inflater)
     }
 
     override fun onCreateView(
@@ -37,16 +65,17 @@ class FragmentMyStatistics : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
+        setHasOptionsMenu(true)
+
         return inflater.inflate(R.layout.fragment_my_statistics, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+
+        setHasOptionsMenu(true)
         val fireStore = FirebaseFirestore.getInstance()
         var m : MutableMap<String, String> = HashMap()
         m.put("putin","molodec")
-
-        val bar : Toolbar? = getView()?.findViewById(R.id.fr_my_stats_toolbar)
-        bar?.setTitle("Stats")
 
 //        fireStore.collection("Users").document().get().addOnSuccessListener(object :  OnSuccessListener<in DocumentSnapshot> {
 //            override fun onSuccess(p0: DocumentSnapshot?) {
@@ -80,6 +109,47 @@ class FragmentMyStatistics : Fragment() {
 //
 //        })
 
+
+
+        buttonNewRecord = view.findViewById(R.id.fr_myStats_button_newRecord)
+        buttonNewRecord.setOnClickListener(this);
+        buttonSearchInStats = view.findViewById(R.id.fr_myStats_button_searchInStats)
+        buttonSearchInStats.setOnClickListener(this)
+        buttonInfoStats  = view.findViewById(R.id.fr_myStats_button_infoAboutStats)
+        buttonInfoStats.setOnClickListener(this)
+        buttonNewStats = view.findViewById(R.id.fr_myStats_button_createStats)
+        buttonNewStats.setOnClickListener(this)
+        layoutLoading  = view.findViewById(R.id.fr_myStats_layout_loading)
+        layoutNewStats = view.findViewById(R.id.fr_myStats_layout_new_stats)
+        layoutMainData = view.findViewById(R.id.fr_myStats_layout_mainData)
+
         super.onViewCreated(view, savedInstanceState)
+    }
+    public fun showLoading(){
+        layoutLoading.visibility = View.VISIBLE
+        layoutMainData.visibility = View.VISIBLE
+        layoutNewStats.visibility = View.GONE
+    }
+    public fun showData(){
+        layoutLoading.visibility = View.GONE
+        layoutMainData.visibility = View.VISIBLE
+        layoutNewStats.visibility = View.GONE
+    }
+
+    public fun showNewStats(){
+        layoutLoading.visibility = View.GONE
+        layoutMainData.visibility = View.GONE
+        layoutNewStats.visibility = View.VISIBLE
+    }
+
+    override fun onClick(p0: View?) {
+        when(p0?.id){
+            R.id.fr_myStats_button_createStats ->{
+                (activity as MainActivity).EnableBars(false)
+                (activity as MainActivity).supportActionBar?.hide()
+                findNavController().navigate(R.id.action_myStatistics_to_fragmentTemplatesStats)
+            }
+
+        }
     }
 }

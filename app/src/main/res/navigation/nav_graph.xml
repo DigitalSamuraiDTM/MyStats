@@ -45,7 +45,11 @@
         android:id="@+id/myStatistics"
         android:name="com.mystats.mystats.my_statistics.FragmentMyStatistics"
         android:label="fragment_my_statistics2"
-        tools:layout="@layout/fragment_my_statistics" />
+        tools:layout="@layout/fragment_my_statistics" >
+        <action
+            android:id="@+id/action_myStatistics_to_fragmentTemplatesStats"
+            app:destination="@id/fragmentTemplatesStats" />
+    </fragment>
     <fragment
         android:id="@+id/fragmentSignUp"
         android:name="com.mystats.mystats.sign_up.FragmentSignUp"
@@ -69,4 +73,34 @@
         android:name="com.mystats.mystats.profile.Fragment_profile"
         android:label="fragment_profile"
         tools:layout="@layout/fragment_profile" />
+    <fragment
+        android:id="@+id/fragmentTemplatesStats"
+        android:name="com.mystats.mystats.new_statistic.FragmentTemplatesStats"
+        android:label="fragment_templates_stats"
+        tools:layout="@layout/fragment_templates_stats" >
+        <action
+            android:id="@+id/action_fragmentTemplatesStats_to_fragmentNameStats"
+            app:destination="@id/fragmentNameStats" />
+        <action
+            android:id="@+id/action_fragmentTemplatesStats_to_fragmentStatsColumns"
+            app:destination="@id/fragmentStatsColumns" />
+    </fragment>
+    <fragment
+        android:id="@+id/fragmentNameStats"
+        android:name="com.mystats.mystats.new_statistic.FragmentNameStats"
+        android:label="fragment_name_stats"
+        tools:layout="@layout/fragment_name_stats" >
+        <action
+            android:id="@+id/action_fragmentNameStats_to_fragmentStatsColumns"
+            app:destination="@id/fragmentStatsColumns" />
+    </fragment>
+    <fragment
+        android:id="@+id/fragmentStatsColumns"
+        android:name="com.mystats.mystats.new_statistic.FragmentStatsColumns"
+        android:label="fragment_stats_columns"
+        tools:layout="@layout/fragment_stats_columns" >
+        <action
+            android:id="@+id/action_fragmentStatsColumns_to_myStatistics"
+            app:destination="@id/myStatistics" />
+    </fragment>
 </navigation>
