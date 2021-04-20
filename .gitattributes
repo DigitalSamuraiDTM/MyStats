@@ -1,2 +1,2 @@
-*.rb linguist-language=Java
-*.glyphs linguist-language=OpenStep-Property-List
+* linguist-vendored
+*.kt linguist-vendored=true
