@@ -43,7 +43,7 @@
     </fragment>
     <fragment
         android:id="@+id/myStatistics"
-        android:name="com.mystats.mystats.my_statistics.MyStatistics"
+        android:name="com.mystats.mystats.my_statistics.FragmentMyStatistics"
         android:label="fragment_my_statistics2"
         tools:layout="@layout/fragment_my_statistics" />
     <fragment

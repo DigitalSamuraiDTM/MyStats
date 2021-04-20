@@ -1,8 +1,6 @@
 package com.mystats.mystats.sign_up
 
-import android.opengl.Visibility
 import android.os.Bundle
-import android.text.Layout
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View

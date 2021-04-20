@@ -8,10 +8,12 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.appcompat.widget.Toolbar
 import androidx.navigation.fragment.findNavController
 import com.google.android.gms.tasks.OnCompleteListener
 import com.google.android.gms.tasks.OnSuccessListener
 import com.google.android.gms.tasks.Task
+import com.google.android.material.appbar.AppBarLayout
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.firestore.DocumentSnapshot
@@ -21,7 +23,7 @@ import com.mystats.mystats.MainActivity.MainActivity
 import com.mystats.mystats.R
 
 
-class MyStatistics : Fragment() {
+class FragmentMyStatistics : Fragment() {
 
 
     override fun onAttach(context: Context) {
@@ -43,6 +45,9 @@ class MyStatistics : Fragment() {
         var m : MutableMap<String, String> = HashMap()
         m.put("putin","molodec")
 
+        val bar : Toolbar? = getView()?.findViewById(R.id.fr_my_stats_toolbar)
+        bar?.setTitle("Stats")
+
 //        fireStore.collection("Users").document().get().addOnSuccessListener(object :  OnSuccessListener<in DocumentSnapshot> {
 //            override fun onSuccess(p0: DocumentSnapshot?) {
 //
@@ -52,16 +57,16 @@ class MyStatistics : Fragment() {
 //            fireStore.collection("Users").get().addOnSuccessListener { snap->
 //                Log.d("FIRESTORE", snap.documents.get(1).toString())
 //            }
-        Log.d("FIRESTORE", FirebaseAuth.getInstance().currentUser.uid.toString());
-        fireStore.collection("Users").document(FirebaseAuth.getInstance().currentUser.uid.toString()).get().addOnSuccessListener{ document ->
-            Log.d("FIRESTORE", document.data.toString());
-            Log.d("FIRESTORE",document.data?.get("PenisSize").toString())
-            Toast.makeText(activity?.baseContext,"СЧИТАЛОСЬ", Toast.LENGTH_LONG).show()
-        }.addOnFailureListener{ exception ->
-
-            Log.d("FIRESTORE", "ERROR");
-            Toast.makeText(activity?.baseContext,"НЕ ПОШЛО", Toast.LENGTH_LONG).show()
-        }
+//        Log.d("FIRESTORE", FirebaseAuth.getInstance().currentUser.uid.toString());
+//        fireStore.collection("Users").document(FirebaseAuth.getInstance().currentUser.uid.toString()).get().addOnSuccessListener{ document ->
+//            Log.d("FIRESTORE", document.data.toString());
+//            Log.d("FIRESTORE",document.data?.get("PenisSize").toString())
+//            Toast.makeText(activity?.baseContext,"СЧИТАЛОСЬ", Toast.LENGTH_LONG).show()
+//        }.addOnFailureListener{ exception ->
+//
+//            Log.d("FIRESTORE", "ERROR");
+//            Toast.makeText(activity?.baseContext,"НЕ ПОШЛО", Toast.LENGTH_LONG).show()
+//        }
 
 //        fireStore.collection("obama").document("monkey").set(m).addOnCompleteListener(object :  OnCompleteListener<Void> {
 //            override fun onComplete(p0: Task<Void>) {
