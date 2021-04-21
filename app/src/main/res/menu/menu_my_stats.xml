@@ -11,6 +11,6 @@
         android:id="@+id/item_myStats_settings"
         android:icon="@drawable/ic_settings"
         android:title="Settings"
-        android:visible="true"
+        android:visible="false"
         app:showAsAction="withText" />
 </menu>

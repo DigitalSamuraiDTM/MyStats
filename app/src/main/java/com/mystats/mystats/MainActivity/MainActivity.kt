@@ -47,6 +47,7 @@ class MainActivity : AppCompatActivity()  {
         } else{
             supportActionBar?.hide()
             navView.visibility = View.GONE
+            //todo анимация задвигания и выдвигания нижнего навигационного компонента
 
         }
     }

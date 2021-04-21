@@ -45,7 +45,8 @@ class FragmentMyStatistics : Fragment(), View.OnClickListener {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when(item.itemId){
             R.id.item_myStats_newStats->{
-                Log.d("FIRESTORE","AWDAWD")
+                (activity as MainActivity).EnableBars(false)
+                findNavController().navigate(R.id.action_myStatistics_to_fragmentTemplatesStats)
             }
             R.id.item_myStats_settings->{
                 Log.d("FIRESTORE","OBEME")
@@ -72,7 +73,6 @@ class FragmentMyStatistics : Fragment(), View.OnClickListener {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
 
-        setHasOptionsMenu(true)
         val fireStore = FirebaseFirestore.getInstance()
         var m : MutableMap<String, String> = HashMap()
         m.put("putin","molodec")
@@ -146,7 +146,6 @@ class FragmentMyStatistics : Fragment(), View.OnClickListener {
         when(p0?.id){
             R.id.fr_myStats_button_createStats ->{
                 (activity as MainActivity).EnableBars(false)
-                (activity as MainActivity).supportActionBar?.hide()
                 findNavController().navigate(R.id.action_myStatistics_to_fragmentTemplatesStats)
             }
 

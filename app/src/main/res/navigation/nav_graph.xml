@@ -13,15 +13,15 @@
         <action
             android:id="@+id/action_fragmentStartApp_to_fragmentSignUp"
             app:destination="@id/fragmentSignUp"
-            app:enterAnim="@anim/slide_to_center_from_right"
-            app:exitAnim="@anim/slide_to_left_from_center"
+            app:enterAnim="@anim/slide_from_right_to_center"
+            app:exitAnim="@anim/slide_from_center_to_left"
             app:popEnterAnim="@anim/slide_from_left_to_center"
             app:popExitAnim="@anim/slide_from_center_to_right" />
         <action
             android:id="@+id/action_fragmentStartApp_to_fragmentSignIn"
             app:destination="@id/fragmentSignIn"
-            app:enterAnim="@anim/slide_to_center_from_right"
-            app:exitAnim="@anim/slide_to_left_from_center"
+            app:enterAnim="@anim/slide_from_right_to_center"
+            app:exitAnim="@anim/slide_from_center_to_left"
             app:popEnterAnim="@anim/slide_from_left_to_center"
             app:popExitAnim="@anim/slide_from_center_to_right" />
         <action
@@ -36,8 +36,8 @@
         <action
             android:id="@+id/action_fragmentSignIn_to_myStatistics"
             app:destination="@id/myStatistics"
-            app:enterAnim="@anim/slide_to_center_from_right"
-            app:exitAnim="@anim/slide_to_left_from_center"
+            app:enterAnim="@anim/slide_from_right_to_center"
+            app:exitAnim="@anim/slide_from_center_to_left"
             app:popEnterAnim="@anim/slide_from_left_to_center"
             app:popExitAnim="@anim/slide_from_center_to_right" />
     </fragment>
@@ -48,7 +48,11 @@
         tools:layout="@layout/fragment_my_statistics" >
         <action
             android:id="@+id/action_myStatistics_to_fragmentTemplatesStats"
-            app:destination="@id/fragmentTemplatesStats" />
+            app:destination="@id/fragmentTemplatesStats"
+            app:enterAnim="@anim/aplha_appearance"
+            app:exitAnim="@anim/aplha_disappearance"
+            app:popEnterAnim="@anim/aplha_appearance"
+            app:popExitAnim="@anim/aplha_disappearance" />
     </fragment>
     <fragment
         android:id="@+id/fragmentSignUp"
@@ -58,8 +62,8 @@
         <action
             android:id="@+id/action_fragmentSignUp_to_fragmentSignIn"
             app:destination="@id/fragmentSignIn"
-            app:enterAnim="@anim/slide_to_center_from_right"
-            app:exitAnim="@anim/slide_to_left_from_center"
+            app:enterAnim="@anim/slide_from_right_to_center"
+            app:exitAnim="@anim/slide_from_center_to_left"
             app:popEnterAnim="@anim/slide_from_left_to_center"
             app:popExitAnim="@anim/slide_from_center_to_right" />
     </fragment>
@@ -80,10 +84,18 @@
         tools:layout="@layout/fragment_templates_stats" >
         <action
             android:id="@+id/action_fragmentTemplatesStats_to_fragmentNameStats"
-            app:destination="@id/fragmentNameStats" />
+            app:destination="@id/fragmentNameStats"
+            app:enterAnim="@anim/slide_from_right_to_center"
+            app:exitAnim="@anim/slide_from_center_to_left"
+            app:popEnterAnim="@anim/slide_from_left_to_center"
+            app:popExitAnim="@anim/slide_from_center_to_right" />
         <action
             android:id="@+id/action_fragmentTemplatesStats_to_fragmentStatsColumns"
-            app:destination="@id/fragmentStatsColumns" />
+            app:destination="@id/fragmentStatsColumns"
+            app:enterAnim="@anim/slide_from_right_to_center"
+            app:exitAnim="@anim/slide_from_center_to_left"
+            app:popEnterAnim="@anim/slide_from_left_to_center"
+            app:popExitAnim="@anim/slide_from_center_to_right"/>
     </fragment>
     <fragment
         android:id="@+id/fragmentNameStats"
@@ -92,7 +104,11 @@
         tools:layout="@layout/fragment_name_stats" >
         <action
             android:id="@+id/action_fragmentNameStats_to_fragmentStatsColumns"
-            app:destination="@id/fragmentStatsColumns" />
+            app:destination="@id/fragmentStatsColumns"
+            app:enterAnim="@anim/slide_from_right_to_center"
+            app:exitAnim="@anim/slide_from_center_to_left"
+            app:popEnterAnim="@anim/slide_from_left_to_center"
+            app:popExitAnim="@anim/slide_from_center_to_right"/>
     </fragment>
     <fragment
         android:id="@+id/fragmentStatsColumns"
