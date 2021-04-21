@@ -1,5 +1,7 @@
 *.iml
+*.kt
 .gradle
+/.idea/.gitignore
 /local.properties
 /.idea/caches
 /.idea/libraries
