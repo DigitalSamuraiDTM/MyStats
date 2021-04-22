@@ -88,15 +88,22 @@ class FragmentMyStatistics : Fragment(), View.OnClickListener {
 //            }
 //        Log.d("FIRESTORE", FirebaseAuth.getInstance().currentUser.uid.toString());
 //        fireStore.collection("Users").document(FirebaseAuth.getInstance().currentUser.uid.toString()).get().addOnSuccessListener{ document ->
-//            Log.d("FIRESTORE", document.data.toString());
-//            Log.d("FIRESTORE",document.data?.get("PenisSize").toString())
+//            //Log.d("FIRESTORE", document.data.toString());
+//            Log.d("FIRESTORE", document.data?.keys.toString());
+//            Log.d("FIRESTORE", document.data?.values.toString());
 //            Toast.makeText(activity?.baseContext,"СЧИТАЛОСЬ", Toast.LENGTH_LONG).show()
+//
+//
 //        }.addOnFailureListener{ exception ->
 //
 //            Log.d("FIRESTORE", "ERROR");
 //            Toast.makeText(activity?.baseContext,"НЕ ПОШЛО", Toast.LENGTH_LONG).show()
 //        }
-
+//        fireStore.collection("Users").document(FirebaseAuth.getInstance().currentUser.uid.toString()).collection("DATA").get().addOnSuccessListener {
+//            snap ->
+//                        Log.d("FIRESTORE", snap.documents[1].toString());
+//
+//        }
 //        fireStore.collection("obama").document("monkey").set(m).addOnCompleteListener(object :  OnCompleteListener<Void> {
 //            override fun onComplete(p0: Task<Void>) {
 //                if (p0.isSuccessful){
@@ -108,6 +115,9 @@ class FragmentMyStatistics : Fragment(), View.OnClickListener {
 //            }
 //
 //        })
+        fireStore.collection("Users").document(FirebaseAuth.getInstance().currentUser.uid.toString()).get().addOnSuccessListener { document ->
+            Log.d("FIRESTORE", document.data?.get("geo").toString());
+        }
 
 
 
