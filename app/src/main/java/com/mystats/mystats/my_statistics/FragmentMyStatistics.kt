@@ -99,11 +99,11 @@ class FragmentMyStatistics : Fragment(), View.OnClickListener {
 //            Log.d("FIRESTORE", "ERROR");
 //            Toast.makeText(activity?.baseContext,"НЕ ПОШЛО", Toast.LENGTH_LONG).show()
 //        }
-//        fireStore.collection("Users").document(FirebaseAuth.getInstance().currentUser.uid.toString()).collection("DATA").get().addOnSuccessListener {
-//            snap ->
-//                        Log.d("FIRESTORE", snap.documents[1].toString());
-//
-//        }
+        fireStore.collection("Users").document(FirebaseAuth.getInstance().currentUser.uid.toString()).collection("DATA").whereEqualTo("NameStats", "Books").get().addOnSuccessListener {
+            snap ->
+                        Log.d("FIRESTORE", snap.toString())
+
+        }
 //        fireStore.collection("obama").document("monkey").set(m).addOnCompleteListener(object :  OnCompleteListener<Void> {
 //            override fun onComplete(p0: Task<Void>) {
 //                if (p0.isSuccessful){
@@ -115,9 +115,9 @@ class FragmentMyStatistics : Fragment(), View.OnClickListener {
 //            }
 //
 //        })
-        fireStore.collection("Users").document(FirebaseAuth.getInstance().currentUser.uid.toString()).get().addOnSuccessListener { document ->
-            Log.d("FIRESTORE", document.data?.get("geo").toString());
-        }
+//        fireStore.collection("Users").document(FirebaseAuth.getInstance().currentUser.uid.toString()).get().addOnSuccessListener { document ->
+//            Log.d("FIRESTORE", document.data?.get("geo").toString());
+//        }
 
 
 

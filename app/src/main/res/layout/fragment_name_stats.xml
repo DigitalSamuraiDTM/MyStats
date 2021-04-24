@@ -6,39 +6,92 @@
     android:layout_height="match_parent"
     tools:context=".new_statistic.FragmentNameStats" >
 
-    <TextView
-        android:id="@+id/textView14"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="10dp"
-        android:text="Ok, then tell me the name of your stats"
-        android:textColor="@color/black"
-        android:textSize="20sp"
-        app:layout_constraintBottom_toTopOf="@+id/fr_nameStats_edit_nameStats"
-        app:layout_constraintEnd_toEndOf="@+id/fr_nameStats_edit_nameStats"
-        app:layout_constraintStart_toStartOf="@+id/fr_nameStats_edit_nameStats" />
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/fr_nameStats_layout_data"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="visible"
+        tools:context=".new_statistic.FragmentNameStats"
+        tools:visibility="visible">
 
-    <EditText
-        android:id="@+id/fr_nameStats_edit_nameStats"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="20dp"
-        android:layout_marginEnd="20dp"
-        android:ems="10"
-        android:hint="My stats"
-        android:inputType="textPersonName"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        <TextView
+            android:id="@+id/textView14"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
+            android:text="Ok, then tell me the name of your stats"
+            android:textColor="@color/black"
+            android:textSize="20sp"
+            app:layout_constraintBottom_toTopOf="@+id/fr_nameStats_edit_nameStats"
+            app:layout_constraintEnd_toEndOf="@+id/fr_nameStats_edit_nameStats"
+            app:layout_constraintStart_toStartOf="@+id/fr_nameStats_edit_nameStats" />
 
-    <Button
-        android:id="@+id/fr_nameStats_button_goNext"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="40dp"
-        android:text="Go next"
-        app:layout_constraintEnd_toEndOf="@+id/fr_nameStats_edit_nameStats"
-        app:layout_constraintStart_toStartOf="@+id/fr_nameStats_edit_nameStats"
-        app:layout_constraintTop_toBottomOf="@+id/fr_nameStats_edit_nameStats" />
+        <EditText
+            android:id="@+id/fr_nameStats_edit_nameStats"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:layout_marginEnd="20dp"
+            android:ems="10"
+            android:hint="My stats"
+            android:inputType="textPersonName"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <Button
+            android:id="@+id/fr_nameStats_button_goNext"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="40dp"
+            android:text="Go next"
+            app:layout_constraintEnd_toEndOf="@+id/fr_nameStats_edit_nameStats"
+            app:layout_constraintStart_toStartOf="@+id/fr_nameStats_edit_nameStats"
+            app:layout_constraintTop_toBottomOf="@+id/fr_nameStats_edit_nameStats" />
+
+        <TextView
+            android:id="@+id/fr_nameStats_view_errors"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="60dp"
+            android:gravity="center"
+            android:text="Error"
+            android:textColor="@android:color/holo_red_dark"
+            android:textSize="16sp"
+            android:visibility="gone"
+            app:layout_constraintEnd_toEndOf="@+id/fr_nameStats_button_goNext"
+            app:layout_constraintStart_toStartOf="@+id/fr_nameStats_button_goNext"
+            app:layout_constraintTop_toBottomOf="@+id/fr_nameStats_button_goNext" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/fr_nameStats_layout_loading"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="gone">
+
+        <ProgressBar
+            android:id="@+id/progressBar4"
+            style="?android:attr/progressBarStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/textView20"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="40dp"
+            android:gravity="center"
+            android:text="A little bit more..."
+            android:textColor="@color/black"
+            app:layout_constraintEnd_toEndOf="@+id/progressBar4"
+            app:layout_constraintStart_toStartOf="@+id/progressBar4"
+            app:layout_constraintTop_toBottomOf="@+id/progressBar4" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
 </androidx.constraintlayout.widget.ConstraintLayout>
