@@ -8,6 +8,7 @@ import android.widget.ArrayAdapter
 import android.widget.EditText
 import android.widget.Spinner
 import androidx.fragment.app.DialogFragment
+import com.mystats.mystats.rowsData.*
 
 class DialogNewRow(private var interfa: InterfaceForDialogNewRow) : DialogFragment() {
     private lateinit var editNameRow : EditText;
@@ -31,7 +32,28 @@ class DialogNewRow(private var interfa: InterfaceForDialogNewRow) : DialogFragme
             builder.setTitle("New row").setView(view)
                     .setPositiveButton("Add", DialogInterface.OnClickListener{ dialog, id ->
 
-                        interfa.getData(Pair(editNameRow.text.toString(), spinnerTypeRow.selectedItemPosition))
+                        var data : RowStat? = null
+
+                        when(spinnerTypeRow.selectedItemPosition){
+                            0->{ //string
+                                data = StringRowStat()
+                                data.setNameRow(editNameRow.text.toString())
+                            }
+                            1->{ //number
+                                data = NumberRowStat()
+                                data.setNameRow(editNameRow.text.toString())
+                            }
+                            2->{ //state
+                                data = StateRowStat()
+                                data.setNameRow(editNameRow.text.toString())
+                            }
+                            3->{ //date
+                                data = DateRowStat()
+                                data.setNameRow(editNameRow.text.toString())
+                            }
+                        }
+
+                        interfa.getData(data)
                         dialog?.dismiss()
                     })
                     .setNegativeButton("Cancel", DialogInterface.OnClickListener{ dialogInterface, i ->

@@ -5,7 +5,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.LinearLayout
 import com.mystats.mystats.MainApplication
-
 class StringRowStat() : RowStat() {
     private lateinit var data : String
     init {
@@ -25,5 +24,9 @@ class StringRowStat() : RowStat() {
 
     override fun getTypeRow(): Int {
         return 0
+    }
+
+    override fun getNameType(): String {
+        return "String"
     }
 }

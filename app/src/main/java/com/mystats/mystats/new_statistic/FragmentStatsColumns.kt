@@ -13,6 +13,7 @@ import com.mystats.mystats.DialogNewRow
 import com.mystats.mystats.InterfaceForDialogNewRow
 import com.mystats.mystats.MainApplication
 import com.mystats.mystats.R
+import com.mystats.mystats.rowsData.RowStat
 
 
 class FragmentStatsColumns : Fragment(), InterfaceForDialogNewRow{
@@ -57,8 +58,8 @@ class FragmentStatsColumns : Fragment(), InterfaceForDialogNewRow{
 
     }
 
-    override fun getData(data: Pair<String, Int>) {
-        Log.d("FIRESTORE", data.first+data.second.toString())
+    override fun getData(data: RowStat?) {
+        Log.d("FIRESTORE", data?.getNameRow()+" "+data?.getNameType())
     }
 
 }

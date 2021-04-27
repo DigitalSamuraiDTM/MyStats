@@ -21,4 +21,8 @@ class NumberRowStat : RowStat() {
     override fun getTypeRow(): Int {
         return 1
     }
+
+    override fun getNameType(): String {
+        return "Number"
+    }
 }

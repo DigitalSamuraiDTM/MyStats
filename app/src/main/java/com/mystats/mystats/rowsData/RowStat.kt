@@ -21,4 +21,6 @@ abstract class RowStat {
         return NameRow
     }
     public abstract fun getTypeRow() : Int
+
+    public abstract fun getNameType() : String
 }
