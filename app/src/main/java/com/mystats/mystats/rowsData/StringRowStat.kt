@@ -5,9 +5,13 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.LinearLayout
 import com.mystats.mystats.MainApplication
-class StringRowStat() : RowStat() {
+class StringRowStat : RowStat {
     private lateinit var data : String
-    init {
+    constructor(name : String, data : String){
+        setNameRow(name)
+        this.data = data
+    }
+    constructor(){
 
     }
 

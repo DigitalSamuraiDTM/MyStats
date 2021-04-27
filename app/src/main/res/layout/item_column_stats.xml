@@ -6,7 +6,7 @@
     android:layout_height="wrap_content">
 
     <TextView
-        android:id="@+id/textView16"
+        android:id="@+id/item_rowStat_view_nameRow"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginStart="5dp"
@@ -15,27 +15,29 @@
         android:textColor="@color/black"
         android:textSize="18sp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/editTextTextPersonName"
+        app:layout_constraintEnd_toStartOf="@+id/item_rowStat_edit_rowType"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <EditText
-        android:id="@+id/editTextTextPersonName"
+        android:id="@+id/item_rowStat_edit_rowType"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:clickable="false"
         android:ems="10"
+        android:focusable="false"
         android:inputType="textPersonName"
         android:maxWidth="150dp"
         android:text="Name"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/imageButton"
+        app:layout_constraintEnd_toStartOf="@+id/item_rowStat_button_delete"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.0"
         app:layout_constraintWidth_max="150dp" />
 
     <ImageButton
-        android:id="@+id/imageButton"
+        android:id="@+id/item_rowStat_button_delete"
         android:layout_width="wrap_content"
         android:layout_height="0dp"
         android:layout_marginEnd="5dp"

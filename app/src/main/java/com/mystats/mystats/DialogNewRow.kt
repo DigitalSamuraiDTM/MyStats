@@ -31,7 +31,9 @@ class DialogNewRow(private var interfa: InterfaceForDialogNewRow) : DialogFragme
 
             builder.setTitle("New row").setView(view)
                     .setPositiveButton("Add", DialogInterface.OnClickListener{ dialog, id ->
-
+                        if (editNameRow.text.toString().isEmpty()){
+                            return@OnClickListener
+                        }
                         var data : RowStat? = null
 
                         when(spinnerTypeRow.selectedItemPosition){
