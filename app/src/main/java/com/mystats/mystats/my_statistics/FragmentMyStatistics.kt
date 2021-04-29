@@ -77,6 +77,13 @@ class FragmentMyStatistics : Fragment(), View.OnClickListener {
         var m : MutableMap<String, String> = HashMap()
         m.put("putin","molodec")
 
+
+        fireStore.collection("Users").document(FirebaseAuth.getInstance().currentUser.uid.toString())
+                .collection("STATS").document("Films")
+                .collection("COLUMNS").document("COLUMNS").get().addOnSuccessListener { document ->
+                    Log.d("FIRESTORE",document.toString())
+                }
+
 //        fireStore.collection("Users").document().get().addOnSuccessListener(object :  OnSuccessListener<in DocumentSnapshot> {
 //            override fun onSuccess(p0: DocumentSnapshot?) {
 //

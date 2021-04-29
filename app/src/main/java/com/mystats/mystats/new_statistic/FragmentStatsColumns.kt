@@ -6,16 +6,16 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Adapter
-import android.widget.ArrayAdapter
 import android.widget.Button
+import android.widget.Toast
+import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.core.widget.NestedScrollView
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.mystats.mystats.DialogNewRow
 import com.mystats.mystats.InterfaceForDialogNewRow
-import com.mystats.mystats.MainApplication
 import com.mystats.mystats.R
 import com.mystats.mystats.rowsData.RowStat
-import com.mystats.mystats.rowsData.StringRowStat
 
 
 class FragmentStatsColumns : Fragment(), InterfaceForDialogNewRow{
@@ -24,6 +24,8 @@ class FragmentStatsColumns : Fragment(), InterfaceForDialogNewRow{
     private lateinit var buttonReady : Button
     private lateinit var adapterRecycler : AdapterRowsStats
     private lateinit var data: ArrayList<RowStat>
+    private lateinit var layoutLoading : ConstraintLayout
+    private lateinit var layoutData : ConstraintLayout
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -37,9 +39,11 @@ class FragmentStatsColumns : Fragment(), InterfaceForDialogNewRow{
         data = ArrayList()
         adapterRecycler = AdapterRowsStats(data)
         recyclerColumns.adapter = adapterRecycler
-        data.add(StringRowStat("Obama", "Pytin"))
+        //data.add(StringRowStat("Obama", "Pytin"))
         recyclerColumns.adapter?.notifyDataSetChanged()
 
+        layoutLoading = view.findViewById(R.id.fr_columnStats_layoutLoading)
+        layoutData  = view.findViewById(R.id.fr_columnStats_lay_data)
 
         buttonNewRow  = view.findViewById(R.id.fr_columnStats_button_newRow)
         buttonNewRow.setOnClickListener {
@@ -52,24 +56,42 @@ class FragmentStatsColumns : Fragment(), InterfaceForDialogNewRow{
         buttonReady  = view.findViewById(R.id.fr_columnsStats_button_complete)
         buttonReady.setOnClickListener(object : View.OnClickListener{
             override fun onClick(p0: View?) {
-                //TODO запрос в базу с сохранением данных
+               PresenterNewStats.getInstance()?.createNewStats(data, this@FragmentStatsColumns)
             }
 
         })
         super.onViewCreated(view, savedInstanceState)
     }
     fun showLoading(){
-        //todo
+        layoutData.visibility = View.GONE
+        buttonReady.visibility = View.GONE
+        layoutLoading.visibility = View.VISIBLE
     }
     fun hideLoading(){
-        //todo
+        layoutData.visibility = View.VISIBLE
+        buttonReady.visibility = View.VISIBLE
+        layoutLoading.visibility = View.GONE
     }
-    fun showError(){
-        //todo
+    fun showError(error : Int){
+        Log.d("FIRESTORE", "ERROR")
+        //0 - empty, 1 - create columns, 2 - create settings stats
+        when(error){
+            0->{
+                Toast.makeText(requireActivity(),"Empty columns", Toast.LENGTH_SHORT).show()
+            }
+            1->{
+                Toast.makeText(requireActivity(),"Request was failed", Toast.LENGTH_SHORT).show()
+            }
+            2->{
+                Toast.makeText(requireActivity(),"Request was failed", Toast.LENGTH_SHORT).show()
+            }
+        }
     }
 
     override fun getData(data: RowStat?) {
         this.data.add(data!!)
     }
-
+    fun finish(){
+        findNavController().navigate(R.id.action_fragmentStatsColumns_to_myStatistics)
+    }
 }
