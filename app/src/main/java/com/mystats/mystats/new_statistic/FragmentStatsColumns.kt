@@ -39,7 +39,6 @@ class FragmentStatsColumns : Fragment(), InterfaceForDialogNewRow{
         data = ArrayList()
         adapterRecycler = AdapterRowsStats(data)
         recyclerColumns.adapter = adapterRecycler
-        //data.add(StringRowStat("Obama", "Pytin"))
         recyclerColumns.adapter?.notifyDataSetChanged()
 
         layoutLoading = view.findViewById(R.id.fr_columnStats_layoutLoading)
@@ -90,8 +89,5 @@ class FragmentStatsColumns : Fragment(), InterfaceForDialogNewRow{
 
     override fun getData(data: RowStat?) {
         this.data.add(data!!)
-    }
-    fun finish(){
-        findNavController().navigate(R.id.action_fragmentStatsColumns_to_myStatistics)
     }
 }
