@@ -12,8 +12,7 @@ import androidx.navigation.fragment.findNavController
 import com.mystats.mystats.MainActivity.MainActivity
 import com.mystats.mystats.R
 import com.mystats.mystats.rowsData.RowStat
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.*
 
 //TODO загрузочный экран
 //findnavcontroller.navigate() - приводит к onDestroyView
@@ -96,7 +95,7 @@ class FragmentMyStatistics : Fragment(), View.OnClickListener {
 
         when(findNavController().previousBackStackEntry?.destination?.id){
             R.id.fragmentStartApp, R.id.fragmentSignIn->{
-                nameStats = loadLastStat()
+                nameStats = presenter?.loadLastStat()
                 if (nameStats==null){
                     nameStats = "Films"
                     presenter?.getDataFromStats(nameStats!!)
@@ -110,7 +109,7 @@ class FragmentMyStatistics : Fragment(), View.OnClickListener {
             R.id.fragmentStatsColumns->{
                 columnsData = arguments?.getSerializable("COLUMNS") as ArrayList<RowStat>
                 nameStats = arguments?.getString("NAME")
-                saveLastStat(nameStats)
+                presenter?.saveLastStat(nameStats)
             }
         }
 
@@ -156,15 +155,11 @@ class FragmentMyStatistics : Fragment(), View.OnClickListener {
 
         }
     }
-    fun saveLastStat(name : String?){
 
-    }
-    fun loadLastStat() : String?{
-        return null
-    }
 
     fun showDataStats(data : ArrayList<ArrayList<RowStat>>) {
-        TODO("Not yet implemented")
+        //todo отображение в recyclerview
+        Log.d("FIRESTORE", data.toString())
     }
 
 }

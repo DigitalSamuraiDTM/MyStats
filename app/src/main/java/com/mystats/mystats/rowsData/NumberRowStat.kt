@@ -6,11 +6,14 @@ import android.widget.LinearLayout
 import com.mystats.mystats.MainApplication
 
 class NumberRowStat : RowStat {
-    private  var data : Int? = -1
+
+    private  var data : Long? = null
 
     constructor(name : String, data : String?){
         setNameRow(name)
-        this.data = data as Int
+        if (data!=null){
+            this.data = data as Long
+        }
     }
 
     constructor()
@@ -21,7 +24,7 @@ class NumberRowStat : RowStat {
     }
 
     override fun setData(s: Any?) {
-        data = (s as Int)
+        data = (s as Long)
     }
 
     override fun getTypeRow(): Int {

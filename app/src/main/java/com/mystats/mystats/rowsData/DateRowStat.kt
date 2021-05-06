@@ -1,6 +1,7 @@
 package com.mystats.mystats.rowsData
 
 import android.view.ViewGroup
+import com.google.firebase.Timestamp
 
 class DateRowStat : RowStat {
 
@@ -19,7 +20,7 @@ class DateRowStat : RowStat {
     }
 
     override fun setData(s: Any?) {
-        TODO("Not yet implemented")
+        this.data = s as String
     }
 
     override fun getTypeRow(): Int {

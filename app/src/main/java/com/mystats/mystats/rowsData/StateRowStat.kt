@@ -5,11 +5,16 @@ import android.view.ViewGroup
 
 class StateRowStat : RowStat {
 
+
+    //todo переделать в boolean
     private var data : Boolean? = null
 
     constructor(name : String, data : String?){
         setNameRow(name)
-        this.data = data as Boolean
+        if (data!=null){
+            this.data = data as Boolean
+
+        }
     }
 
     constructor()
@@ -19,7 +24,7 @@ class StateRowStat : RowStat {
     }
 
     override fun setData(s: Any?) {
-        TODO("Not yet implemented")
+        this.data = s as Boolean
     }
 
     override fun getTypeRow(): Int {
