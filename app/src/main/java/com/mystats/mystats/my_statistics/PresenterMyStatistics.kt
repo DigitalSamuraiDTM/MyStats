@@ -7,6 +7,7 @@ import kotlin.coroutines.*
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.mystats.mystats.rowsData.*
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
@@ -20,9 +21,12 @@ class PresenterMyStatistics {
         this.view = view
         preferences = view.requireActivity().getSharedPreferences("MyStats", Context.MODE_PRIVATE)
     }
-    public  fun getDataFromStats(name : String) = GlobalScope.launch {
-
+    public  fun getDataFromStats(name : String, clearColumns : Boolean) = GlobalScope.launch(Dispatchers.Unconfined) {
+            //todo использую диспетчер, который работает вместе с главным потоком. Правильно ли это?
             view.showLoading()
+            if (clearColumns){
+                columns = null
+            }
             if (columns == null || (columns != null && columns?.isEmpty() == true)) {
                 columns = getColumnsFromStats(name);
             }
@@ -33,7 +37,7 @@ class PresenterMyStatistics {
                 .addOnSuccessListener { snap ->
                     var outData = ArrayList<ArrayList<RowStat>>()
                     var noteData = columns
-                    Log.d("FIRESTORE", snap.documents.toString())
+                    //Log.d("FIRESTORE", snap.documents.toString())
                     for (i: Int in 0..snap.size() - 1) {
                         for (j: Int in 0..noteData!!.size - 1) {
                             noteData[j].setData(snap.documents[i].get(noteData[j].getNameRow()))
@@ -41,6 +45,7 @@ class PresenterMyStatistics {
                         outData.add(noteData)
                         noteData = columns
                     }
+
                     view.showDataStats(outData)
                 }.addOnFailureListener {
 
@@ -57,7 +62,6 @@ class PresenterMyStatistics {
                  .addOnSuccessListener { doc ->
                      Log.d("FIRESTORE", doc.get("NAMES").toString())
                      val names = doc.get("NAMES") as List<String>
-                     val i = 0
                      val types = doc.get("TYPES") as List<Int>
                      val columns = ArrayList<RowStat>()
                      for (i: Int in 0..types.size - 1) {
@@ -92,5 +96,18 @@ class PresenterMyStatistics {
     }
     fun loadLastStat() : String?{
         return preferences.getString("LastStatName", null);
+    }
+
+    fun getNamesStats(){
+        FirebaseFirestore.getInstance().collection("Users")
+                .document(FirebaseAuth.getInstance().currentUser?.uid.toString())
+                .collection("STATS").get().addOnSuccessListener { snap ->
+
+                    val data = ArrayList<String>()
+                    for(i : Int in 0..snap.size()-1){
+                        data.add(snap.documents[i].id)
+                    }
+                    view.addNamesStatsInSubMenu(data)
+                }
     }
 }
