@@ -17,14 +17,14 @@ import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 
-
+//TODO красота отображение recyclerView.
+// ! не работают режимы анфокуса. Сортировка записей по дате создания
 class PresenterMyStatistics {
     private lateinit var view: FragmentMyStatistics
     private  var columns : ArrayList<RowStat>? = null
     private lateinit var preferences : SharedPreferences
     private  var sizeStat : Int = 0
     private  var nameStat : String? = null
-    private lateinit var n2 : String
     private  var recyclerData =  ArrayList<ArrayList<RowStat>>()
     private lateinit var recyclerAdapter : AdapterRecord;
 
@@ -121,7 +121,6 @@ class PresenterMyStatistics {
     }
     fun loadLastStat() : String?{
         nameStat = preferences.getString("LastStatName", null);
-        n2 = nameStat!!
         return nameStat
     }
 
@@ -169,11 +168,30 @@ class PresenterMyStatistics {
         DataStats.data = recyclerData
         DataStats.nameStat = nameStat
         DataStats.sizeStat = sizeStat
-        DataStats.columns = columns!!
+        DataStats.columns = columns
     }
 
     fun getRecyclerAdapter(): AdapterRecord {
         return recyclerAdapter
+    }
+
+    fun newStatsWasCreated(nameStat: String?, columns: ArrayList<RowStat>) {
+        this.nameStat = nameStat
+        this.columns = columns
+        saveLastStat(nameStat)
+        view.showEmptyStats()
+        view.changeTitleName(nameStat)
+
+    }
+
+    fun appWasStarted() {
+        nameStat = loadLastStat()
+        if (nameStat==null){
+            view.showNewStats()
+        } else{
+            view.changeTitleName(nameStat)
+            this.getDataFromStats(null, false)
+        }
     }
 
 }

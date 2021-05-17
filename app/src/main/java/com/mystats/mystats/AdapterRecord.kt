@@ -42,7 +42,6 @@ class AdapterRecord : RecyclerView.Adapter<AdapterRecord.ViewHolder> {
         val lay : LinearLayout = holder.itemView.findViewById("item_recyclerRecord_mainLay".hashCode())
         for(i : Int in 0..data[position].size-1){
                 //todo навести красоту
-                    //todo сохранять новую запись в бд
             val v = data[position][i].drawRowToViewData(writable)
             lay.addView(v)
         }

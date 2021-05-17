@@ -21,6 +21,7 @@ class PresenterNewRecord {
         for(i : Int in 0..data.size-1){
             out.put(data[i].getNameRow().toString(), data[i].getData()!!)
         }
+        out.put("FIRESTORE_DATESTAMP_CREATE",com.google.firebase.firestore.FieldValue.serverTimestamp())
         FirebaseFirestore.getInstance().collection("Users")
             .document(FirebaseAuth.getInstance().currentUser?.uid.toString())
             .collection("STATS").document(nameStat)
