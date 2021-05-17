@@ -53,6 +53,9 @@
             app:exitAnim="@anim/aplha_disappearance"
             app:popEnterAnim="@anim/aplha_appearance"
             app:popExitAnim="@anim/aplha_disappearance" />
+        <action
+            android:id="@+id/action_myStatistics_to_fragmentNewRecord"
+            app:destination="@id/fragmentNewRecord" />
     </fragment>
     <fragment
         android:id="@+id/fragmentSignUp"
@@ -117,6 +120,15 @@
         tools:layout="@layout/fragment_stats_columns" >
         <action
             android:id="@+id/action_fragmentStatsColumns_to_myStatistics"
+            app:destination="@id/myStatistics" />
+    </fragment>
+    <fragment
+        android:id="@+id/fragmentNewRecord"
+        android:name="com.mystats.mystats.new_record.FragmentNewRecord"
+        android:label="fragment_new_record"
+        tools:layout="@layout/fragment_new_record" >
+        <action
+            android:id="@+id/action_fragmentNewRecord_to_myStatistics"
             app:destination="@id/myStatistics" />
     </fragment>
 </navigation>

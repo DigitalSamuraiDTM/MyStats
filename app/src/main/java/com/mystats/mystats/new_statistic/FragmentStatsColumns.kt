@@ -48,7 +48,7 @@ class FragmentStatsColumns : Fragment(), InterfaceForDialogNewRow{
         buttonNewRow.setOnClickListener {
 
 
-            val dialog = DialogNewRow(this)
+            val dialog = DialogNewRow(this as InterfaceForDialogNewRow)
             dialog.show(requireActivity().supportFragmentManager,"NewRow")
 
         }

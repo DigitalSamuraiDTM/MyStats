@@ -35,7 +35,7 @@ class PresenterNewStats {
         //todo как-то проверять на наличие интернета
         FirebaseFirestore.getInstance().collection("Users")
                 .document(FirebaseAuth.getInstance().currentUser?.uid.toString())
-                .collection("STATS").whereEqualTo("NameStats",name).get().addOnSuccessListener { snap ->
+                .collection("STATS").whereEqualTo("STATNAME",name).get().addOnSuccessListener { snap ->
                     if (snap.documents.size==0){
                         NameStats = name
                         view.goToColumns()
@@ -66,7 +66,6 @@ class PresenterNewStats {
         val columnsData = hashMapOf("NAMES" to nameColumns,"TYPES" to typeColumns )
         //columnsData.set("NAMES", nameColumns)
         //columnsData.set("TYPES", typeColumns)
-        //TODO перепроверить работу создания статистики
         userStore.collection("STATS").document(NameStats)
                 .collection("COLUMNS").document("COLUMNS").set(columnsData)
                 .addOnSuccessListener {

@@ -2,10 +2,15 @@ package com.mystats.mystats.my_statistics
 
 import android.content.Context
 import android.content.SharedPreferences
+import android.os.Bundle
 import android.util.Log
+import androidx.navigation.fragment.findNavController
 import kotlin.coroutines.*
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
+import com.mystats.mystats.AdapterRecord
+import com.mystats.mystats.DataStats
+import com.mystats.mystats.R
 import com.mystats.mystats.rowsData.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
@@ -17,38 +22,59 @@ class PresenterMyStatistics {
     private lateinit var view: FragmentMyStatistics
     private  var columns : ArrayList<RowStat>? = null
     private lateinit var preferences : SharedPreferences
+    private  var sizeStat : Int = 0
+    private  var nameStat : String? = null
+    private lateinit var n2 : String
+    private  var recyclerData =  ArrayList<ArrayList<RowStat>>()
+    private lateinit var recyclerAdapter : AdapterRecord;
+
     constructor(view : FragmentMyStatistics){
         this.view = view
         preferences = view.requireActivity().getSharedPreferences("MyStats", Context.MODE_PRIVATE)
+        recyclerAdapter = AdapterRecord(recyclerData,false)
     }
-    public  fun getDataFromStats(name : String, clearColumns : Boolean) = GlobalScope.launch(Dispatchers.Unconfined) {
+    public fun setDataInAdapter(adapter : AdapterRecord){
+        adapter.setArrayData(recyclerData)
+    }
+    public  fun getDataFromStats(name : String?, clearColumns : Boolean) = GlobalScope.launch(Dispatchers.Unconfined) {
             //todo использую диспетчер, который работает вместе с главным потоком. Правильно ли это?
-            view.showLoading()
-            if (clearColumns){
+        if (name!=null){
+            nameStat = name
+        }
+        view.showLoading()
+        //recyclerAdapter.notifyItemRangeRemoved(0,recyclerData.size)
+        recyclerData = ArrayList<ArrayList<RowStat>>()
+        if (clearColumns){
                 columns = null
             }
             if (columns == null || (columns != null && columns?.isEmpty() == true)) {
-                columns = getColumnsFromStats(name);
+                columns = getColumnsFromStats(nameStat!!);
             }
-
-            FirebaseFirestore.getInstance().collection("Users")
+        FirebaseFirestore.getInstance().collection("Users")
                 .document(FirebaseAuth.getInstance().currentUser?.uid.toString())
-                .collection("STATS").document(name).collection("DATA").get()
+                .collection("STATS").document(nameStat!!).collection("DATA").get()
                 .addOnSuccessListener { snap ->
-                    var outData = ArrayList<ArrayList<RowStat>>()
-                    var noteData = columns
-                    //Log.d("FIRESTORE", snap.documents.toString())
+
                     for (i: Int in 0..snap.size() - 1) {
-                        for (j: Int in 0..noteData!!.size - 1) {
+                        //выполняем глубокое копирование, чтобы в columns не хранились данные
+                        val noteData  = (columns!!.map { it.clone() }) as ArrayList<RowStat>
+
+                        //сохраняем данные в записи и запись добавляем в общий массив записей
+                        for (j: Int in 0..noteData.size - 1) {
                             noteData[j].setData(snap.documents[i].get(noteData[j].getNameRow()))
                         }
-                        outData.add(noteData)
-                        noteData = columns
+                        recyclerData.add(noteData)
                     }
-
-                    view.showDataStats(outData)
+                    view.clearRecycler()
+                    recyclerAdapter.setNewData(recyclerData)
+                    if (recyclerData.size ==0){
+                        view.showEmptyStats()
+                    } else{
+                        recyclerAdapter.notifyDataSetChanged()
+                        view.showDataLayout()
+                    }
                 }.addOnFailureListener {
-
+                    //todo обработка ошибок
                 }
     }
 
@@ -60,7 +86,6 @@ class PresenterMyStatistics {
                  .collection("STATS").document(name)
                  .collection("COLUMNS").document("COLUMNS").get()
                  .addOnSuccessListener { doc ->
-                     Log.d("FIRESTORE", doc.get("NAMES").toString())
                      val names = doc.get("NAMES") as List<String>
                      val types = doc.get("TYPES") as List<Int>
                      val columns = ArrayList<RowStat>()
@@ -95,7 +120,9 @@ class PresenterMyStatistics {
         preferences.edit().putString("LastStatName",name).apply()
     }
     fun loadLastStat() : String?{
-        return preferences.getString("LastStatName", null);
+        nameStat = preferences.getString("LastStatName", null);
+        n2 = nameStat!!
+        return nameStat
     }
 
     fun getNamesStats(){
@@ -110,4 +137,43 @@ class PresenterMyStatistics {
                     view.addNamesStatsInSubMenu(data)
                 }
     }
+
+    public fun goToNewRecord(){
+        val bundle = Bundle()
+        //columns!!.map { it.clone() }) as ArrayList<RowStat>
+        bundle.putSerializable("COLUMNS", (columns!!.map { it.clone() } as ArrayList<RowStat>))
+        bundle.putString("NAMESTAT",nameStat)
+        //todo нужно ли нам будет знать о том, какое имя у документа с записью?
+        sizeStat = 3
+        bundle.putInt("SIZESTAT",sizeStat)
+        view.findNavController().navigate(R.id.action_myStatistics_to_fragmentNewRecord,bundle)
+    }
+
+
+    public fun addRecordInRecycler(data : ArrayList<RowStat>){
+        this.recyclerData.add(data)
+    }
+
+    //Todo заглушка! Вместо него необходимо юзать ViewState у Moxy
+    public fun initViewState(){
+        if (DataStats.data.size!=0){
+            recyclerData.addAll(DataStats.data)
+            nameStat = DataStats.nameStat
+            sizeStat = DataStats.sizeStat
+            columns = DataStats.columns
+        }
+    }
+
+    public fun saveViewState(){
+        DataStats.data.clear()
+        DataStats.data = recyclerData
+        DataStats.nameStat = nameStat
+        DataStats.sizeStat = sizeStat
+        DataStats.columns = columns!!
+    }
+
+    fun getRecyclerAdapter(): AdapterRecord {
+        return recyclerAdapter
+    }
+
 }

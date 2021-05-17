@@ -9,19 +9,24 @@ import android.widget.Toast
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.RecyclerView
+import com.mystats.mystats.AdapterRecord
 import com.mystats.mystats.MainActivity.MainActivity
 import com.mystats.mystats.R
 import com.mystats.mystats.rowsData.RowStat
 import kotlinx.coroutines.*
 
 //TODO загрузочный экран
-//findnavcontroller.navigate() - приводит к onDestroyView
+  //TODO авторизация в несуществующий аккаунт
+//findnavcontroller.navigate() - приводит к тому, что цикл начинается с attach
 class FragmentMyStatistics : Fragment(), View.OnClickListener {
 
     private lateinit var buttonNewRecord : Button
+    private lateinit var buttonEmptyNewRecord : Button
     private lateinit var buttonSearchInStats : ImageButton
     private lateinit var buttonInfoStats : ImageButton
     private lateinit var buttonNewStats : Button
+    private lateinit var recyclerData : RecyclerView
     private lateinit var layoutLoading : ConstraintLayout
     private lateinit var layoutNewStats : ConstraintLayout
     private lateinit var layoutMainData : ConstraintLayout
@@ -31,12 +36,16 @@ class FragmentMyStatistics : Fragment(), View.OnClickListener {
     private var nameStats : String? = null
     private var presenter : PresenterMyStatistics? = null
 
-
     override fun onAttach(context: Context) {
-        presenter = PresenterMyStatistics(this)
         super.onAttach(context)
+        //todo нужно юзать мокси для сохранения состояния
+        //todo можно сделать заглушку в виде статического класса
+        presenter = PresenterMyStatistics(this)
     }
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+    }
 
     override fun onDetach() {
         presenter = null;
@@ -45,8 +54,17 @@ class FragmentMyStatistics : Fragment(), View.OnClickListener {
 
     override fun onResume() {
         (activity as MainActivity).EnableBars(true);
-
         super.onResume()
+    }
+
+    override fun onStart() {
+        presenter?.initViewState()
+        super.onStart()
+    }
+
+    override fun onStop() {
+        presenter?.saveViewState()
+        super.onStop()
     }
 
     override fun onCreateView(
@@ -63,6 +81,8 @@ class FragmentMyStatistics : Fragment(), View.OnClickListener {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
 
+        buttonEmptyNewRecord = view.findViewById(R.id.fr_myStats_buttonEmptyStats_addRecord)
+        buttonEmptyNewRecord.setOnClickListener(this)
         buttonNewRecord = view.findViewById(R.id.fr_myStats_button_newRecord)
         buttonNewRecord.setOnClickListener(this);
         buttonSearchInStats = view.findViewById(R.id.fr_myStats_button_searchInStats)
@@ -76,15 +96,19 @@ class FragmentMyStatistics : Fragment(), View.OnClickListener {
         layoutMainData = view.findViewById(R.id.fr_myStats_layout_mainData)
         layoutNewRecord = view.findViewById(R.id.fr_myStats_layout_emptyStats)
 
+        recyclerData = view.findViewById(R.id.fr_myStats_recycler_data)
+        recyclerData.adapter = presenter?.getRecyclerAdapter()
+
 
         when(findNavController().previousBackStackEntry?.destination?.id){
             R.id.fragmentStartApp, R.id.fragmentSignIn->{
+                //todo не стоит хранить здесь имя статы, лучше переписать механики в отдельные функции и сделать проверку в презентере
                 nameStats = presenter?.loadLastStat()
                 if (nameStats==null){
                     showNewStats()
                 } else{
                     requireActivity().setTitle(nameStats)
-                    presenter?.getDataFromStats(nameStats!!, false)
+                    presenter?.getDataFromStats(null,false)
                 }
             }
             R.id.fragmentStatsColumns->{
@@ -93,7 +117,13 @@ class FragmentMyStatistics : Fragment(), View.OnClickListener {
                 requireActivity().setTitle(nameStats)
                 presenter?.saveLastStat(nameStats)
                 showEmptyStats()
-                addNamesStatsInSubMenu(nameStats!!)
+                //todo после прихода от создания статистик не нужно с нуля делать запрос, нужно просто добавить только что созданную
+                //addNamesStatsInSubMenu(nameStats!!)
+            }
+            R.id.fragmentNewRecord ->{
+                presenter?.addRecordInRecycler(arguments?.getSerializable("NOTE") as ArrayList<RowStat>)
+                showDataLayout()
+                //данные пихать надо куда-то
             }
         }
 
@@ -136,19 +166,16 @@ class FragmentMyStatistics : Fragment(), View.OnClickListener {
                 findNavController().navigate(R.id.action_myStatistics_to_fragmentTemplatesStats)
             }
             R.id.fr_myStats_button_newRecord, R.id.fr_myStats_buttonEmptyStats_addRecord ->{
-                //todo новая запись, оаоаамммм
+                //todo при изменении возникает ошибка нуля
+                //todo короче куча ошибок, но оно кое как работает
+                presenter?.goToNewRecord()
+                (activity as MainActivity).EnableBars(false)
             }
 
         }
     }
-    fun showDataStats(data : ArrayList<ArrayList<RowStat>>) {
-        //todo отображение в recyclerview
-        if (data.size==0){
-            showEmptyStats()
-        } else{
-            showDataLayout()
-        }
-    }
+
+
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         inflater.inflate(R.menu.menu_my_stats,menu)
@@ -192,6 +219,10 @@ class FragmentMyStatistics : Fragment(), View.OnClickListener {
         for(i : Int in 0..names.size-1){
             subMenu.add(0,0,0,names[i])
         }
+    }
+
+    fun clearRecycler() {
+        recyclerData.removeAllViews()
     }
 
 }

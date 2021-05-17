@@ -1,12 +1,16 @@
 package com.mystats.mystats.rowsData
 
+import android.os.Parcel
+import android.os.Parcelable
+import android.view.View
 import android.view.ViewGroup
 import android.widget.LinearLayout
 import androidx.constraintlayout.widget.ConstraintLayout
 import com.mystats.mystats.MainApplication
+import java.io.Serializable
 import java.util.*
 
-abstract class RowStat {
+abstract class RowStat :  Serializable, Cloneable {
 
     companion object{
         val TYPE_STRING : Int  = 0
@@ -19,10 +23,12 @@ abstract class RowStat {
     private lateinit var NameRow : String
 
 
-    public abstract fun drawRowToViewData() : ViewGroup
+    public abstract fun drawRowToViewData(writable : Boolean) : View
 
 
     public abstract fun setData(s: Any?)
+
+    public abstract fun getData() : Any?
 
     public fun setNameRow(name : String){
         NameRow = name
@@ -33,4 +39,6 @@ abstract class RowStat {
     public abstract fun getTypeRow() : Int
 
     public abstract fun getNameType() : String
+
+    public abstract override fun clone(): Any
 }
