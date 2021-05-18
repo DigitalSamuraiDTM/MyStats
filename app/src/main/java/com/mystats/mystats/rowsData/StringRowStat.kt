@@ -30,8 +30,10 @@ class StringRowStat : RowStat {
         val text : TextView = v.findViewById(R.id.rowEdit_view_nameRow)
         text.setText(getNameRow())
         val editData : EditText = v.findViewById(R.id.rowEdit_edit_data)
-        editData.inputType = InputType.TYPE_CLASS_TEXT
-        //todo настройка стиля вьюхи, а то цвета болота и у числа с датой :с
+        //editData.inputType = InputType.TYPE_TEXT_FLAG_MULTI_LINE
+        editData.maxLines = 50
+        editData.minLines = 1
+
         //editData.setBackground(ContextCompat.getDrawable(MainApplication.getContext()))
         editData.setOnFocusChangeListener(object : View.OnFocusChangeListener{
             override fun onFocusChange(p0: View?, hasFocus: Boolean) {
@@ -45,13 +47,15 @@ class StringRowStat : RowStat {
             editData.setText(data)
         }
         if (!writable){
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                editData.focusable = View.NOT_FOCUSABLE
-            } else{
+//            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+//                editData.focusable = View.NOT_FOCUSABLE
+//            } else{
                 //todo попробовать оба способа и проверить за одно и focusable
                 //editData.inputType = InputType.TYPE_NULL
+                    editData.isClickable = false;
+            editData.isFocusable = false
                 editData.setTextIsSelectable(false)
-            }
+//            }
         }
         return (v)
     }

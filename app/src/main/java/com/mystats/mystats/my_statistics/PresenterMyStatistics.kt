@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.SharedPreferences
 import android.os.Bundle
 import android.util.Log
+import android.view.ViewGroup
 import androidx.navigation.fragment.findNavController
 import kotlin.coroutines.*
 import com.google.firebase.auth.FirebaseAuth
@@ -33,6 +34,11 @@ class PresenterMyStatistics {
         preferences = view.requireActivity().getSharedPreferences("MyStats", Context.MODE_PRIVATE)
         recyclerAdapter = AdapterRecord(recyclerData,false)
     }
+
+    public fun setRootInAdapter(root : ViewGroup){
+        recyclerAdapter.setRoot(root)
+    }
+
     public fun setDataInAdapter(adapter : AdapterRecord){
         adapter.setArrayData(recyclerData)
     }

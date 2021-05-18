@@ -7,6 +7,7 @@ import android.content.Context
 class MainApplication : Application() {
     override fun onCreate() {
         context = applicationContext;
+        context.setTheme(R.style.MyStats)
         super.onCreate()
     }
     companion object{

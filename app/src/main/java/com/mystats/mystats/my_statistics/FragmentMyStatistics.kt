@@ -33,7 +33,6 @@ class FragmentMyStatistics : Fragment(), View.OnClickListener {
     private lateinit var layoutNewStats : ConstraintLayout
     private lateinit var layoutMainData : ConstraintLayout
     private lateinit var layoutNewRecord : ConstraintLayout
-    private lateinit var columnsData : ArrayList<RowStat>
     private lateinit var itemStats : MenuItem
     private var presenter : PresenterMyStatistics? = null
 
@@ -91,6 +90,7 @@ class FragmentMyStatistics : Fragment(), View.OnClickListener {
 
         recyclerData = view.findViewById(R.id.fr_myStats_recycler_data)
         recyclerData.adapter = presenter?.getRecyclerAdapter()
+        presenter?.setRootInAdapter(recyclerData)
 
 
         when(findNavController().previousBackStackEntry?.destination?.id){
@@ -210,5 +210,6 @@ class FragmentMyStatistics : Fragment(), View.OnClickListener {
     fun changeTitleName(nameStat: String?) {
         requireActivity().setTitle(nameStat)
     }
+
 
 }

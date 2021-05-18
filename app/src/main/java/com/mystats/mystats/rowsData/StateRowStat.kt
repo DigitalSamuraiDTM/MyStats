@@ -8,6 +8,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
+import androidx.annotation.RequiresApi
 import com.mystats.mystats.MainApplication
 import com.mystats.mystats.R
 
@@ -29,6 +30,7 @@ class StateRowStat : RowStat {
 
     override fun drawRowToViewData(writable : Boolean): View {
         val v  = LayoutInflater.from(MainApplication.getContext()).inflate(R.layout.row_with_checkbox,null)
+
         val text : TextView = v.findViewById(R.id.rowCheckBox_view_nameRow)
         text.setText(getNameRow())
         val checkBoxData : CheckBox = v.findViewById(R.id.rowCheck_checkbox_data)
@@ -38,16 +40,17 @@ class StateRowStat : RowStat {
             }
         })
         if(data !=null){
-            //todo переделать отображение
-            //editData.setText(data)
+            checkBoxData.isChecked = data!!
         }
         if (!writable){
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                checkBoxData.focusable = View.NOT_FOCUSABLE
-            } else{
-                    checkBoxData.isClickable = false;
-                checkBoxData.setTextIsSelectable(false)
-            }
+//            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+//                checkBoxData.focusable = View.NOT_FOCUSABLE
+//            } else{
+            checkBoxData.isClickable = false;
+            checkBoxData.isFocusable = false
+
+            //checkBoxData.setTextIsSelectable(false)
+//            }
         }
         return (v)
     }

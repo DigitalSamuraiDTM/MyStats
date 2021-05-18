@@ -1,13 +1,10 @@
 package com.mystats.mystats.rowsData
 
-import android.icu.number.IntegerWidth
 import android.os.Build
 import android.text.InputType
 import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import android.widget.EditText
-import android.widget.LinearLayout
 import android.widget.TextView
 import com.mystats.mystats.MainApplication
 import com.mystats.mystats.R
@@ -29,7 +26,10 @@ class NumberRowStat : RowStat {
         val text : TextView = v.findViewById(R.id.rowEdit_view_nameRow)
         text.setText(getNameRow())
         val editData : EditText = v.findViewById(R.id.rowEdit_edit_data)
-        editData.inputType = InputType.TYPE_CLASS_NUMBER
+        //todo нужен или не нужен тип ввода?
+        editData.inputType = (InputType.TYPE_CLASS_NUMBER + InputType.TYPE_TEXT_FLAG_MULTI_LINE)
+        editData.maxLines = 50
+        editData.minLines = 1
         editData.setOnFocusChangeListener(object : View.OnFocusChangeListener{
             override fun onFocusChange(p0: View?, hasFocus: Boolean) {
                 if (!hasFocus){
