@@ -21,6 +21,7 @@ class FragmentNewRecord : Fragment() {
     private lateinit var  presenter : PresenterNewRecord
     private lateinit var  nameStat : String
     private  var  sizeStat : Int = 0
+    private lateinit var  adapterRecord : AdapterRecord
     override fun onAttach(context: Context) {
         presenter = PresenterNewRecord(this)
         super.onAttach(context)
@@ -38,13 +39,14 @@ class FragmentNewRecord : Fragment() {
         buttonFinish.setOnClickListener{
             //this.activity?.window?.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
             //todo будут проверки на нулевость?
+            adapterRecord.confirmData()
             presenter.createNewRecord(dataList[0],nameStat,sizeStat)
 
         }
 
         dataList = ArrayList()
         //val s : ArrayList<RowStat> = (arguments?.getSerializable("COLUMNS") as ArrayList<RowStat>?)!!
-        val adapterRecord = AdapterRecord(dataList,true)
+        adapterRecord = AdapterRecord(dataList,true)
         recyclerRecord.adapter = adapterRecord
 
         dataList.add(arguments?.getSerializable("COLUMNS")!! as java.util.ArrayList<RowStat>)
@@ -55,7 +57,7 @@ class FragmentNewRecord : Fragment() {
     }
 
     public fun showLoading(){
-
+        //TODO доделать, плюс убрать лесенку (попытаться)
     }
 
     public fun showDataLayout(){

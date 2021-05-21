@@ -17,7 +17,7 @@ import com.mystats.mystats.R
 
 class StringRowStat : RowStat {
     private  var data : String? = null
-
+    private var editData : EditText? = null
     constructor(name: String, data: String?) {
         setNameRow(name)
         this.data = data
@@ -25,37 +25,35 @@ class StringRowStat : RowStat {
 
     constructor()
 
+    override fun confirmDataInstallation() {
+        if (editData != null){
+            data = editData?.text.toString()
+        }
+    }
+
     override fun drawRowToViewData(writable : Boolean): View {
         val v  = LayoutInflater.from(MainApplication.getContext()).inflate(R.layout.row_with_edit,null)
         val text : TextView = v.findViewById(R.id.rowEdit_view_nameRow)
         text.setText(getNameRow())
-        val editData : EditText = v.findViewById(R.id.rowEdit_edit_data)
-        //editData.inputType = InputType.TYPE_TEXT_FLAG_MULTI_LINE
-        editData.maxLines = 50
-        editData.minLines = 1
+        editData  = v.findViewById(R.id.rowEdit_edit_data)
+        editData?.maxLines = 50
+        editData?.minLines = 1
 
-        //editData.setBackground(ContextCompat.getDrawable(MainApplication.getContext()))
-        editData.setOnFocusChangeListener(object : View.OnFocusChangeListener{
+        editData?.setOnFocusChangeListener(object : View.OnFocusChangeListener{
             override fun onFocusChange(p0: View?, hasFocus: Boolean) {
                 if (!hasFocus){
-                    data = editData.text.toString()
+                    data = editData?.text.toString()
                 }
             }
 
         })
         if(data !=null){
-            editData.setText(data)
+            editData?.setText(data)
         }
         if (!writable){
-//            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-//                editData.focusable = View.NOT_FOCUSABLE
-//            } else{
-                //todo попробовать оба способа и проверить за одно и focusable
-                //editData.inputType = InputType.TYPE_NULL
-                    editData.isClickable = false;
-            editData.isFocusable = false
-                editData.setTextIsSelectable(false)
-//            }
+            editData?.isClickable = false;
+            editData?.isFocusable = false
+            editData?.setTextIsSelectable(false)
         }
         return (v)
     }

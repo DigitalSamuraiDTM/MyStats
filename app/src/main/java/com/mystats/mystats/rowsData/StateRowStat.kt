@@ -14,40 +14,44 @@ import com.mystats.mystats.R
 
 class StateRowStat : RowStat {
 
-
-    //todo переделать в boolean
+    private  var checkBoxData : CheckBox? = null
     private var data : Boolean? = false
 
     constructor(name : String, data : Any?){
         setNameRow(name)
         if (data!=null){
             this.data = data as Boolean
-
         }
     }
 
     constructor()
+
+    override fun confirmDataInstallation() {
+        if (checkBoxData !=null){
+            data = checkBoxData?.isChecked
+        }
+    }
 
     override fun drawRowToViewData(writable : Boolean): View {
         val v  = LayoutInflater.from(MainApplication.getContext()).inflate(R.layout.row_with_checkbox,null)
 
         val text : TextView = v.findViewById(R.id.rowCheckBox_view_nameRow)
         text.setText(getNameRow())
-        val checkBoxData : CheckBox = v.findViewById(R.id.rowCheck_checkbox_data)
-        checkBoxData.setOnCheckedChangeListener(object : CompoundButton.OnCheckedChangeListener {
+        checkBoxData  = v.findViewById(R.id.rowCheck_checkbox_data)
+        checkBoxData?.setOnCheckedChangeListener(object : CompoundButton.OnCheckedChangeListener {
             override fun onCheckedChanged(p0: CompoundButton?, p1: Boolean) {
                 data = p1
             }
         })
         if(data !=null){
-            checkBoxData.isChecked = data!!
+            checkBoxData?.isChecked = data!!
         }
         if (!writable){
 //            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
 //                checkBoxData.focusable = View.NOT_FOCUSABLE
 //            } else{
-            checkBoxData.isClickable = false;
-            checkBoxData.isFocusable = false
+            checkBoxData?.isClickable = false;
+            checkBoxData?.isFocusable = false
 
             //checkBoxData.setTextIsSelectable(false)
 //            }

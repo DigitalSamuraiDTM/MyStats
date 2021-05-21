@@ -12,6 +12,7 @@ import com.mystats.mystats.R
 class NumberRowStat : RowStat {
 
     private  var data : Long? = null
+    private  var editData : EditText? = null
 
     constructor(name : String, data : Any?){
         setNameRow(name)
@@ -21,35 +22,32 @@ class NumberRowStat : RowStat {
     }
 
     constructor()
+
+    override fun confirmDataInstallation() {
+        if (editData!=null){
+            data = editData?.text.toString().toLong()
+        }
+    }
+
     override fun drawRowToViewData(writable : Boolean): View {
         val v  = LayoutInflater.from(MainApplication.getContext()).inflate(R.layout.row_with_edit,null)
         val text : TextView = v.findViewById(R.id.rowEdit_view_nameRow)
         text.setText(getNameRow())
-        val editData : EditText = v.findViewById(R.id.rowEdit_edit_data)
-        //todo нужен или не нужен тип ввода?
-        editData.inputType = (InputType.TYPE_CLASS_NUMBER + InputType.TYPE_TEXT_FLAG_MULTI_LINE)
-        editData.maxLines = 50
-        editData.minLines = 1
-        editData.setOnFocusChangeListener(object : View.OnFocusChangeListener{
-            override fun onFocusChange(p0: View?, hasFocus: Boolean) {
-                if (!hasFocus){
-                    if (editData.text.toString() !=""){
-                        data = editData.text.toString().toLong()
-                    }
-                }
-            }
+        editData  = v.findViewById(R.id.rowEdit_edit_data)
+        editData?.inputType = (InputType.TYPE_CLASS_NUMBER + InputType.TYPE_TEXT_FLAG_MULTI_LINE)
+        editData?.maxLines = 50
+        editData?.minLines = 1
 
-        })
         if(data !=null){
-            editData.setText(data.toString())
+            editData?.setText(data.toString())
         }
         if (!writable){
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                editData.focusable = View.NOT_FOCUSABLE
+                editData?.focusable = View.NOT_FOCUSABLE
             } else{
                 //todo попробовать оба способа и проверить за одно и focusable
                 //editData.inputType = InputType.TYPE_NULL
-                editData.setTextIsSelectable(false)
+                editData?.setTextIsSelectable(false)
             }
         }
         return (v)

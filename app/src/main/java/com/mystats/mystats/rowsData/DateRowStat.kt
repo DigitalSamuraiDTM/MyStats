@@ -17,6 +17,7 @@ class DateRowStat : RowStat {
 
     //TODO переделать в тип даты
     private  var data : String? = null
+    private  var editData : EditText? = null
 
 
     constructor(name : String, data : String?){
@@ -26,32 +27,30 @@ class DateRowStat : RowStat {
 
     constructor()
 
+    override fun confirmDataInstallation() {
+        if (editData !=null){
+            data = editData?.text.toString()
+        }
+    }
+
     override fun drawRowToViewData(writable : Boolean): View {
         val v  = LayoutInflater.from(MainApplication.getContext()).inflate(R.layout.row_with_edit,null)
         val text : TextView = v.findViewById(R.id.rowEdit_view_nameRow)
         text.setText(getNameRow())
-        val editData : EditText = v.findViewById(R.id.rowEdit_edit_data)
-        editData.inputType = InputType.TYPE_CLASS_DATETIME
+        editData  = v.findViewById(R.id.rowEdit_edit_data)
+        editData?.inputType = InputType.TYPE_CLASS_DATETIME
         //todo можно добавить кнопочку с календарем
 
-        editData.setOnFocusChangeListener(object : View.OnFocusChangeListener{
-            override fun onFocusChange(p0: View?, hasFocus: Boolean) {
-                if (!hasFocus){
-                    data = editData.text.toString()
-                }
-            }
-
-        })
         if(data !=null){
-            editData.setText(data)
+            editData?.setText(data)
         }
         if (!writable){
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                editData.focusable = View.NOT_FOCUSABLE
+                editData?.focusable = View.NOT_FOCUSABLE
             } else{
                 //todo попробовать оба способа и проверить за одно и focusable
                 //editData.inputType = InputType.TYPE_NULL
-                editData.setTextIsSelectable(false)
+                editData?.setTextIsSelectable(false)
             }
         }
         return (v)

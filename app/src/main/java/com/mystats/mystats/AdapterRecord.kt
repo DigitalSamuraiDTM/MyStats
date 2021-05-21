@@ -30,6 +30,12 @@ class AdapterRecord : RecyclerView.Adapter<AdapterRecord.ViewHolder> {
         this.data = data
     }
 
+    public fun confirmData(){
+        for(i : Int in 0..data[0].size-1){
+            data[0][i].confirmDataInstallation()
+        }
+    }
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val mainLay = LinearLayout(parent.context)
 

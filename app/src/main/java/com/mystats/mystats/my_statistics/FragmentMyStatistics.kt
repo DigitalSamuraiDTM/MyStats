@@ -52,9 +52,12 @@ class FragmentMyStatistics : Fragment(), View.OnClickListener {
     }
 
 
+    override fun onStop() {
+        presenter?.saveViewState()
+        super.onStop()
+    }
 
     override fun onDestroy() {
-        presenter?.saveViewState()
         presenter = null;
         super.onDestroy()
     }
