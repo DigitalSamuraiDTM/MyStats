@@ -48,7 +48,7 @@ class FragmentNewRecord : Fragment() {
         //val s : ArrayList<RowStat> = (arguments?.getSerializable("COLUMNS") as ArrayList<RowStat>?)!!
         adapterRecord = AdapterRecord(dataList,true)
         recyclerRecord.adapter = adapterRecord
-
+        // Получает колонки и добавляет в recycler
         dataList.add(arguments?.getSerializable("COLUMNS")!! as java.util.ArrayList<RowStat>)
         nameStat = arguments?.getString("NAMESTAT").toString()
         sizeStat = arguments?.getInt("SIZESTAT")!!.toInt()

@@ -31,6 +31,7 @@ class PresenterMyStatistics {
 
     constructor(view : FragmentMyStatistics){
         this.view = view
+        // Получаем настройки и создаем adapter
         preferences = view.requireActivity().getSharedPreferences("MyStats", Context.MODE_PRIVATE)
         recyclerAdapter = AdapterRecord(recyclerData,false)
     }
@@ -42,6 +43,7 @@ class PresenterMyStatistics {
     public fun setDataInAdapter(adapter : AdapterRecord){
         adapter.setArrayData(recyclerData)
     }
+    // Получение данных из БД, запускаем Корутину
     public  fun getDataFromStats(name : String?, clearColumns : Boolean) = GlobalScope.launch(Dispatchers.Unconfined) {
             //todo использую диспетчер, который работает вместе с главным потоком. Правильно ли это?
         if (name!=null){
@@ -53,9 +55,11 @@ class PresenterMyStatistics {
         if (clearColumns){
                 columns = null
             }
+            // Если колонки пустые, мы их загружаем
             if (columns == null || (columns != null && columns?.isEmpty() == true)) {
                 columns = getColumnsFromStats(nameStat!!);
             }
+        // Запрос в БД
         FirebaseFirestore.getInstance().collection("Users")
                 .document(FirebaseAuth.getInstance().currentUser?.uid.toString())
                 .collection("STATS").document(nameStat!!).collection("DATA").get()
@@ -84,7 +88,7 @@ class PresenterMyStatistics {
                 }
     }
 
-
+     // Получение колонок из БД
      suspend  fun getColumnsFromStats(name : String) : ArrayList<RowStat>? {
          return suspendCoroutine { continuation ->
              FirebaseFirestore.getInstance().collection("Users")
@@ -96,7 +100,7 @@ class PresenterMyStatistics {
                      val types = doc.get("TYPES") as List<Int>
                      val columns = ArrayList<RowStat>()
                      for (i: Int in 0..types.size - 1) {
-
+                         // Создает объект по типу колонки и добавляет его в массив колонок
                          when (types[i]) {
                              RowStat.TYPE_STRING -> {
                                  val col = StringRowStat(names[i], null)
@@ -129,7 +133,7 @@ class PresenterMyStatistics {
         nameStat = preferences.getString("LastStatName", null);
         return nameStat
     }
-
+    // Получает название статистики и сохраняет его в Меню
     fun getNamesStats(){
         FirebaseFirestore.getInstance().collection("Users")
                 .document(FirebaseAuth.getInstance().currentUser?.uid.toString())
@@ -142,7 +146,7 @@ class PresenterMyStatistics {
                     view.addNamesStatsInSubMenu(data)
                 }
     }
-
+    // Переход к фрагменту новой записи
     public fun goToNewRecord(){
         val bundle = Bundle()
         //columns!!.map { it.clone() }) as ArrayList<RowStat>
@@ -154,7 +158,7 @@ class PresenterMyStatistics {
         view.findNavController().navigate(R.id.action_myStatistics_to_fragmentNewRecord,bundle)
     }
 
-
+    // Добавление данных в recycler
     public fun addRecordInRecycler(data : ArrayList<RowStat>){
         this.recyclerData.add(data)
     }
@@ -168,7 +172,7 @@ class PresenterMyStatistics {
             columns = DataStats.columns
         }
     }
-
+    // Автономное хранение данных
     public fun saveViewState(){
         DataStats.data.clear()
         DataStats.data = recyclerData

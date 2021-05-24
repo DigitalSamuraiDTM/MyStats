@@ -37,7 +37,7 @@ class FragmentMyStatistics : Fragment(), View.OnClickListener {
     private var presenter : PresenterMyStatistics? = null
 
 
-
+    // Выгружаем состояние
     override fun onCreate(savedInstanceState: Bundle?) {
         presenter = PresenterMyStatistics(this)
         presenter?.initViewState()
@@ -51,7 +51,7 @@ class FragmentMyStatistics : Fragment(), View.OnClickListener {
         super.onResume()
     }
 
-
+    // Сохраняем состояние фрагмента
     override fun onStop() {
         presenter?.saveViewState()
         super.onStop()
@@ -90,12 +90,12 @@ class FragmentMyStatistics : Fragment(), View.OnClickListener {
         layoutNewStats = view.findViewById(R.id.fr_myStats_layout_new_stats)
         layoutMainData = view.findViewById(R.id.fr_myStats_layout_mainData)
         layoutNewRecord = view.findViewById(R.id.fr_myStats_layout_emptyStats)
-
+        // Находим recyclerView и устанавливаем в него adapter из presenter
         recyclerData = view.findViewById(R.id.fr_myStats_recycler_data)
         recyclerData.adapter = presenter?.getRecyclerAdapter()
         presenter?.setRootInAdapter(recyclerData)
 
-
+        // Проверка на предыдущие фрагменты
         when(findNavController().previousBackStackEntry?.destination?.id){
             R.id.fragmentStartApp, R.id.fragmentSignIn->{
                 presenter?.appWasStarted()
@@ -145,7 +145,7 @@ class FragmentMyStatistics : Fragment(), View.OnClickListener {
         layoutNewStats.visibility = View.GONE
         layoutNewRecord.visibility = View.VISIBLE
     }
-
+    // Общий слушатель
     override fun onClick(p0: View?) {
         when(p0?.id){
             R.id.fr_myStats_button_createStats ->{

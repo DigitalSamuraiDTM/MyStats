@@ -13,7 +13,7 @@ class PresenterNewRecord {
     constructor(view : FragmentNewRecord, ){
         this.view = view;
     }
-
+    // Создание новой записи и отправка в БД
     public fun createNewRecord(data : ArrayList<RowStat>, nameStat : String, address : Int){
         view.showLoading()
 
