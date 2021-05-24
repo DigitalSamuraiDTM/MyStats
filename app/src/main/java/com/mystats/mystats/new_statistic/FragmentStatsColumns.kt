@@ -1,35 +1,31 @@
 package com.mystats.mystats.new_statistic
 
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
+import android.widget.Toast
+import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.core.widget.NestedScrollView
+import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.RecyclerView
+import com.mystats.mystats.DialogNewRow
+import com.mystats.mystats.InterfaceForDialogNewRow
 import com.mystats.mystats.R
+import com.mystats.mystats.rowsData.RowStat
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
 
-/**
- * A simple [Fragment] subclass.
- * Use the [FragmentStatsColumns.newInstance] factory method to
- * create an instance of this fragment.
- */
-class FragmentStatsColumns : Fragment() {
-    // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
-        }
-    }
-
+class FragmentStatsColumns : Fragment(), InterfaceForDialogNewRow{
+    private lateinit var recyclerColumns : RecyclerView
+    private lateinit var buttonNewRow : Button
+    private lateinit var buttonReady : Button
+    private lateinit var adapterRecycler : AdapterRowsStats
+    private lateinit var data: ArrayList<RowStat>
+    private lateinit var layoutLoading : ConstraintLayout
+    private lateinit var layoutData : ConstraintLayout
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -38,23 +34,60 @@ class FragmentStatsColumns : Fragment() {
         return inflater.inflate(R.layout.fragment_stats_columns, container, false)
     }
 
-    companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment FragmentStatsColumns.
-         */
-        // TODO: Rename and change types and number of parameters
-        @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-            FragmentStatsColumns().apply {
-                arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
-                }
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        recyclerColumns = view.findViewById(R.id.fr_columnsStats_recycler_rows)
+        data = ArrayList()
+        adapterRecycler = AdapterRowsStats(data)
+        recyclerColumns.adapter = adapterRecycler
+        recyclerColumns.adapter?.notifyDataSetChanged()
+
+        layoutLoading = view.findViewById(R.id.fr_columnStats_layoutLoading)
+        layoutData  = view.findViewById(R.id.fr_columnStats_lay_data)
+
+        buttonNewRow  = view.findViewById(R.id.fr_columnStats_button_newRow)
+        buttonNewRow.setOnClickListener {
+
+
+            val dialog = DialogNewRow(this as InterfaceForDialogNewRow)
+            dialog.show(requireActivity().supportFragmentManager,"NewRow")
+
+        }
+        buttonReady  = view.findViewById(R.id.fr_columnsStats_button_complete)
+        buttonReady.setOnClickListener(object : View.OnClickListener{
+            override fun onClick(p0: View?) {
+               PresenterNewStats.getInstance()?.createNewStats(data, this@FragmentStatsColumns)
             }
+
+        })
+        super.onViewCreated(view, savedInstanceState)
+    }
+    fun showLoading(){
+        layoutData.visibility = View.GONE
+        buttonReady.visibility = View.GONE
+        layoutLoading.visibility = View.VISIBLE
+    }
+    fun hideLoading(){
+        layoutData.visibility = View.VISIBLE
+        buttonReady.visibility = View.VISIBLE
+        layoutLoading.visibility = View.GONE
+    }
+    fun showError(error : Int){
+        Log.d("FIRESTORE", "ERROR")
+        //0 - empty, 1 - create columns, 2 - create settings stats
+        when(error){
+            0->{
+                Toast.makeText(requireActivity(),"Empty columns", Toast.LENGTH_SHORT).show()
+            }
+            1->{
+                Toast.makeText(requireActivity(),"Request was failed", Toast.LENGTH_SHORT).show()
+            }
+            2->{
+                Toast.makeText(requireActivity(),"Request was failed", Toast.LENGTH_SHORT).show()
+            }
+        }
+    }
+
+    override fun getData(data: RowStat?) {
+        this.data.add(data!!)
     }
 }

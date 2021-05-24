@@ -8,6 +8,12 @@
         android:title="New stats"
         app:showAsAction="withText" />
     <item
+        android:id="@+id/item_myStats_myStats"
+        android:menuCategory="container"
+        android:title="My stats" >
+        <menu/>
+    </item>
+    <item
         android:id="@+id/item_myStats_settings"
         android:icon="@drawable/ic_settings"
         android:title="Settings"

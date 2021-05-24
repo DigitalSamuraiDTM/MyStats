@@ -1,5 +1,4 @@
 *.iml
-*.kt
 .gradle
 /.idea/.gitignore
 /local.properties
