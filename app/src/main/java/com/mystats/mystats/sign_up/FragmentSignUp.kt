@@ -24,11 +24,21 @@ class FragmentSignUp : Fragment() {
     private lateinit var LayoutLoading : ConstraintLayout
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        // Создаем presenter в функции onCreate
         presenter = PresenterSignUp(this)
         super.onCreate(savedInstanceState)
     }
 
+    override fun onCreateView( // Поиск иинтерфейса
+            inflater: LayoutInflater, container: ViewGroup?,
+            savedInstanceState: Bundle?
+    ): View? {
+        // Inflate the layout for this fragment
+        return inflater.inflate(R.layout.fragment_sign_up, container, false)
+    }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        // Инициализируем объекты интерфеса
         LayoutLoading = view.findViewById(R.id.fr_sign_up_layout_loading)
         LayoutSignUp = view.findViewById(R.id.fr_sign_up_layout_sign_up)
         EditEmail = view.findViewById(R.id.fr_sign_up_email)
@@ -41,23 +51,15 @@ class FragmentSignUp : Fragment() {
         super.onViewCreated(view, savedInstanceState)
     }
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_sign_up, container, false)
-    }
-
-    public fun showLoading(){
+    public fun showLoading(){ // Отображение экрана загрузки
         LayoutSignUp.visibility = View.GONE
         LayoutLoading.visibility = View.VISIBLE
     }
-    public fun hideLoading(){
+    public fun hideLoading(){ // Прячет экран загрузки
         LayoutSignUp.visibility = View.VISIBLE
         LayoutLoading.visibility = View.GONE
     }
-    public fun showError(error : Int){
+    public fun showError(error : Int){ // Выводит ошибку
         when(error){
             ErrorsSigning.ERROR_NOT_EQUAL_PASS -> {
                 Toast.makeText(activity?.applicationContext,"Password not equal", Toast.LENGTH_SHORT).show()
@@ -67,8 +69,8 @@ class FragmentSignUp : Fragment() {
             }
         }
     }
-    public fun signInComplete(){
-        var bundle : Bundle = Bundle()
+    public fun signInComplete(){ // Завершение регистрации
+        var bundle : Bundle = Bundle() // Bundle позволяет передавать данные между фрагментами
         bundle.putString("p", EditPassword.text.toString())
         bundle.putString("m", EditEmail.text.toString())
         findNavController().navigate(R.id.action_fragmentSignUp_to_fragmentSignIn, bundle)
@@ -76,6 +78,7 @@ class FragmentSignUp : Fragment() {
     }
 
     override fun onDestroy() {
+        // Обнуляем presenter
         presenter = null
         super.onDestroy()
     }

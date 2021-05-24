@@ -8,12 +8,11 @@ import com.mystats.mystats.ErrorsSigning
 
 class PresenterSignUp {
     private lateinit var view : FragmentSignUp
-    constructor(view : FragmentSignUp){
+    constructor(view : FragmentSignUp){ // Принимает фрагмент в конструкторе
         this.view = view;
     }
 
-    fun signUpUser(email: String, pass : String, repPass : String){
-        //todo проверка на пустые поля
+    fun signUpUser(email: String, pass : String, repPass : String){ // Функция регистрации
         if (!pass.equals(repPass)){
             view.showError(ErrorsSigning.ERROR_NOT_EQUAL_PASS)
             return
@@ -26,6 +25,7 @@ class PresenterSignUp {
 
         view.showLoading()
 
+        // Осуществление запроса на регистрацию в Firebase
         FirebaseAuth.getInstance().createUserWithEmailAndPassword(email,pass).addOnCompleteListener(object : OnCompleteListener<AuthResult> {
             override fun onComplete(p0: Task<AuthResult>) {
                 if (p0.isSuccessful){

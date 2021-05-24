@@ -19,6 +19,7 @@ class PresenterSignIn {
         }
         view.showLoading()
         if (FirebaseAuth.getInstance().currentUser != null){
+            // Синхронизирует пользователя с БД
             FirebaseAuth.getInstance().currentUser?.reload()?.addOnCompleteListener(object : OnCompleteListener<Void> {
                 override fun onComplete(p0: Task<Void>) {
                     if (p0.isSuccessful){
@@ -33,6 +34,7 @@ class PresenterSignIn {
 
             })
         } else{
+            // Авторизация
             FirebaseAuth.getInstance().signInWithEmailAndPassword(email,pass).addOnCompleteListener(object :  OnCompleteListener<AuthResult> {
                 override fun onComplete(p0: Task<AuthResult>) {
                     if (p0.isSuccessful){

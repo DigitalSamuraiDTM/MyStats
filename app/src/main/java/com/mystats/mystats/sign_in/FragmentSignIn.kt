@@ -41,6 +41,7 @@ class FragmentSignIn : Fragment() {
         editPass = view.findViewById(R.id.fr_sign_in_pass)
         layLoading  = view.findViewById(R.id.fr_sign_in_loading)
         layData  = view.findViewById(R.id.fr_sign_in_signing)
+        // Принимает аргументы, если существуют
         if (arguments?.getString("m") != null && arguments?.getString("p") != null){
 
             editEmail.setText(arguments?.getString("m"))

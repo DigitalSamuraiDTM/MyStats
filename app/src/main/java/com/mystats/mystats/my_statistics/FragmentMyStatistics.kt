@@ -42,6 +42,7 @@ class FragmentMyStatistics : Fragment(), View.OnClickListener {
         super.onResume()
     }
 
+
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when(item.itemId){
             R.id.item_myStats_newStats->{
@@ -72,44 +73,6 @@ class FragmentMyStatistics : Fragment(), View.OnClickListener {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-
-        val fireStore = FirebaseFirestore.getInstance()
-        var m : MutableMap<String, String> = HashMap()
-        m.put("putin","molodec")
-
-//        fireStore.collection("Users").document().get().addOnSuccessListener(object :  OnSuccessListener<in DocumentSnapshot> {
-//            override fun onSuccess(p0: DocumentSnapshot?) {
-//
-//            }
-//
-//        })
-//            fireStore.collection("Users").get().addOnSuccessListener { snap->
-//                Log.d("FIRESTORE", snap.documents.get(1).toString())
-//            }
-//        Log.d("FIRESTORE", FirebaseAuth.getInstance().currentUser.uid.toString());
-//        fireStore.collection("Users").document(FirebaseAuth.getInstance().currentUser.uid.toString()).get().addOnSuccessListener{ document ->
-//            Log.d("FIRESTORE", document.data.toString());
-//            Log.d("FIRESTORE",document.data?.get("PenisSize").toString())
-//            Toast.makeText(activity?.baseContext,"СЧИТАЛОСЬ", Toast.LENGTH_LONG).show()
-//        }.addOnFailureListener{ exception ->
-//
-//            Log.d("FIRESTORE", "ERROR");
-//            Toast.makeText(activity?.baseContext,"НЕ ПОШЛО", Toast.LENGTH_LONG).show()
-//        }
-
-//        fireStore.collection("obama").document("monkey").set(m).addOnCompleteListener(object :  OnCompleteListener<Void> {
-//            override fun onComplete(p0: Task<Void>) {
-//                if (p0.isSuccessful){
-//                    Log.d("FIRESTORE","NIIICE")
-//                } else{
-//                    Log.d("FIRESTORE","BAAAD")
-//
-//                }
-//            }
-//
-//        })
-
-
 
         buttonNewRecord = view.findViewById(R.id.fr_myStats_button_newRecord)
         buttonNewRecord.setOnClickListener(this);
