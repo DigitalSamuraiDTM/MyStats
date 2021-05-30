@@ -59,6 +59,7 @@ class AdapterRecord : RecyclerView.Adapter<AdapterRecord.ViewHolder> {
                 //todo навести красоту
             val v = data[position][i].drawRowToViewData(writable)
             lay.addView(v)
+
         }
     }
 

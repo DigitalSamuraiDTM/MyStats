@@ -182,6 +182,7 @@ class PresenterMyStatistics {
     }
 
     fun newStatsWasCreated(nameStat: String?, columns: ArrayList<RowStat>) {
+        recyclerData.clear()
         this.nameStat = nameStat
         this.columns = columns
         saveLastStat(nameStat)
