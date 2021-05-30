@@ -1,10 +1,8 @@
 package com.mystats.mystats.new_statistic
 
-import android.content.DialogInterface
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageButton
 import android.widget.TextView
@@ -28,6 +26,7 @@ class AdapterRowsStats : RecyclerView.Adapter<AdapterRowsStats.ViewHolder> {
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.editTypeRow.setText(data.get(position).getNameType())
         holder.data = data.get(position)
+        holder.adapter = this
         holder.viewNameRow.setText(data.get(position).getNameRow())
     }
 
@@ -35,8 +34,14 @@ class AdapterRowsStats : RecyclerView.Adapter<AdapterRowsStats.ViewHolder> {
         return data.size
     }
 
+    private fun deleteRow(pos : Int){
+        data.removeAt(pos)
+        notifyItemRemoved(pos)
+    }
+
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView), View.OnClickListener {
          var editTypeRow : EditText
+         lateinit var adapter : AdapterRowsStats
          var viewNameRow : TextView
          var ButtonDelete : ImageButton
          lateinit var data : RowStat
@@ -50,7 +55,7 @@ class AdapterRowsStats : RecyclerView.Adapter<AdapterRowsStats.ViewHolder> {
         override fun onClick(p0: View?) {
             when(p0?.id){
                 R.id.item_rowStat_button_delete ->{
-                    //todo delete row
+                    adapter.deleteRow(adapterPosition)
                 }
             }
         }

@@ -50,6 +50,7 @@ class PresenterNewStats {
                         view.showError(3)
                 }
     }
+
     fun createNewStats(columns: ArrayList<RowStat>, view: FragmentStatsColumns){
         if (columns.isEmpty()){
             view.showError(0)
@@ -75,6 +76,7 @@ class PresenterNewStats {
                     view.showError(1)
                 }
     }
+
     private fun setSettingsStats(view : FragmentStatsColumns, columns : ArrayList<RowStat>){
         val data = hashMapOf("STATNAME" to NameStats)
         userStore.collection("STATS").document(NameStats).set(data).addOnSuccessListener {

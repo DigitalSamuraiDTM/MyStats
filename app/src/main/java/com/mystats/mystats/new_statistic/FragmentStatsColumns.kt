@@ -26,6 +26,7 @@ class FragmentStatsColumns : Fragment(), InterfaceForDialogNewRow{
     private lateinit var data: ArrayList<RowStat>
     private lateinit var layoutLoading : ConstraintLayout
     private lateinit var layoutData : ConstraintLayout
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -61,16 +62,19 @@ class FragmentStatsColumns : Fragment(), InterfaceForDialogNewRow{
         })
         super.onViewCreated(view, savedInstanceState)
     }
+
     fun showLoading(){
         layoutData.visibility = View.GONE
         buttonReady.visibility = View.GONE
         layoutLoading.visibility = View.VISIBLE
     }
+
     fun hideLoading(){
         layoutData.visibility = View.VISIBLE
         buttonReady.visibility = View.VISIBLE
         layoutLoading.visibility = View.GONE
     }
+
     fun showError(error : Int){
         Log.d("FIRESTORE", "ERROR")
         //0 - empty, 1 - create columns, 2 - create settings stats
