@@ -17,21 +17,26 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
+import moxy.InjectViewState
+import moxy.MvpPresenter
 
 //TODO красота отображение recyclerView.
 // ! не работают режимы анфокуса. Сортировка записей по дате создания
-class PresenterMyStatistics {
-    private lateinit var view: FragmentMyStatistics
+@InjectViewState
+class PresenterMyStatistics() : MvpPresenter<MvpViewMyStatistics>() {
     private  var columns : ArrayList<RowStat>? = null
     private lateinit var preferences : SharedPreferences
     private  var sizeStat : Int = 0
     private  var nameStat : String? = null
     private  var recyclerData =  ArrayList<ArrayList<RowStat>>()
-    private lateinit var recyclerAdapter : AdapterRecord;
+    private  var recyclerAdapter : AdapterRecord;
+    private var Started : Boolean = false;
 
-    constructor(view : FragmentMyStatistics){
-        this.view = view
-        preferences = view.requireActivity().getSharedPreferences("MyStats", Context.MODE_PRIVATE)
+    public fun setPreferences(pref : SharedPreferences){
+        preferences = pref;
+    }
+
+    init {
         recyclerAdapter = AdapterRecord(recyclerData,false)
     }
 
@@ -47,7 +52,7 @@ class PresenterMyStatistics {
         if (name!=null){
             nameStat = name
         }
-        view.showLoading()
+        viewState.showLoading();
         //recyclerAdapter.notifyItemRangeRemoved(0,recyclerData.size)
         recyclerData = ArrayList<ArrayList<RowStat>>()
         if (clearColumns){
@@ -71,13 +76,13 @@ class PresenterMyStatistics {
                         }
                         recyclerData.add(noteData)
                     }
-                    view.clearRecycler()
+                    viewState.clearRecycler()
                     recyclerAdapter.setNewData(recyclerData)
                     if (recyclerData.size ==0){
-                        view.showEmptyStats()
+                        viewState.showEmptyStats()
                     } else{
                         recyclerAdapter.notifyDataSetChanged()
-                        view.showDataLayout()
+                        viewState.showDataLayout()
                     }
                 }.addOnFailureListener {
                     //todo обработка ошибок
@@ -131,6 +136,7 @@ class PresenterMyStatistics {
     }
 
     fun getNamesStats(){
+        //todo сохранять их в презентер, чтобы не делать лишний запрос
         FirebaseFirestore.getInstance().collection("Users")
                 .document(FirebaseAuth.getInstance().currentUser?.uid.toString())
                 .collection("STATS").get().addOnSuccessListener { snap ->
@@ -139,7 +145,7 @@ class PresenterMyStatistics {
                     for(i : Int in 0..snap.size()-1){
                         data.add(snap.documents[i].id)
                     }
-                    view.addNamesStatsInSubMenu(data)
+                    viewState.addNamesStatsInSubMenu(data)
                 }
     }
 
@@ -151,7 +157,7 @@ class PresenterMyStatistics {
         //todo нужно ли нам будет знать о том, какое имя у документа с записью?
         sizeStat = 3
         bundle.putInt("SIZESTAT",sizeStat)
-        view.findNavController().navigate(R.id.action_myStatistics_to_fragmentNewRecord,bundle)
+        viewState.navigateToNewRecord(bundle);
     }
 
 
@@ -159,24 +165,8 @@ class PresenterMyStatistics {
         this.recyclerData.add(data)
     }
 
-    //Todo заглушка! Вместо него необходимо юзать ViewState у Moxy
-    public fun initViewState(){
-        if (DataStats.data.size!=0){
-            recyclerData.addAll(DataStats.data)
-            nameStat = DataStats.nameStat
-            sizeStat = DataStats.sizeStat
-            columns = DataStats.columns
-        }
-    }
 
-    public fun saveViewState(){
-        DataStats.data.clear()
-        DataStats.data = recyclerData
-        DataStats.nameStat = nameStat
-        DataStats.sizeStat = sizeStat
-        DataStats.columns = columns
-    }
-
+    //Правильно ли?
     fun getRecyclerAdapter(): AdapterRecord {
         return recyclerAdapter
     }
@@ -186,19 +176,24 @@ class PresenterMyStatistics {
         this.nameStat = nameStat
         this.columns = columns
         saveLastStat(nameStat)
-        view.showEmptyStats()
-        view.changeTitleName(nameStat)
+        viewState.showEmptyStats()
+        viewState.changeTitleName(nameStat)
 
     }
 
     fun appWasStarted() {
-        nameStat = loadLastStat()
-        if (nameStat==null){
-            view.showNewStats()
-        } else{
-            view.changeTitleName(nameStat)
-            this.getDataFromStats(null, false)
+        if (!Started) {
+            Started = true
+            nameStat = loadLastStat()
+            if (nameStat == null) {
+                viewState.showNewStats()
+            } else {
+                //TODO не меняет тайтл плюс как-то криво работает ViewState
+                viewState.changeTitleName(nameStat)
+                this.getDataFromStats(null, false)
+            }
         }
     }
+
 
 }

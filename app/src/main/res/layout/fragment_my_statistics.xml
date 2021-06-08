@@ -77,12 +77,12 @@
                         android:src="@drawable/ic_search_black" />
 
                     <ImageButton
-                        android:id="@+id/fr_myStats_button_infoAboutStats"
+                        android:id="@+id/fr_myStats_button_SettingsStats"
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
                         android:layout_weight="1"
                         android:background="@color/white"
-                        android:src="@drawable/ic_info_black" />
+                        android:src="@drawable/ic_settings" />
                 </LinearLayout>
 
                 <androidx.recyclerview.widget.RecyclerView

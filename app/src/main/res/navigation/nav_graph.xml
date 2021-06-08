@@ -26,7 +26,10 @@
             app:popExitAnim="@anim/slide_from_center_to_right" />
         <action
             android:id="@+id/action_fragmentStartApp_to_myStatistics"
-            app:destination="@id/myStatistics" />
+            app:destination="@id/myStatistics"/>
+<!--            app:popUpToInclusive="true"-->
+<!--            app:popUpTo="@+id/nav_graph" -->
+
     </fragment>
     <fragment
         android:id="@+id/fragmentSignIn"
@@ -56,6 +59,9 @@
         <action
             android:id="@+id/action_myStatistics_to_fragmentNewRecord"
             app:destination="@id/fragmentNewRecord" />
+        <action
+            android:id="@+id/action_myStatistics_to_fragmentSettingsStats"
+            app:destination="@id/fragmentSettingsStats" />
     </fragment>
     <fragment
         android:id="@+id/fragmentSignUp"
@@ -131,4 +137,8 @@
             android:id="@+id/action_fragmentNewRecord_to_myStatistics"
             app:destination="@id/myStatistics" />
     </fragment>
+    <fragment
+        android:id="@+id/fragmentSettingsStats"
+        android:name="com.mystats.mystats.settingsStats.FragmentSettingsStats"
+        android:label="FragmentSettingsStats" />
 </navigation>

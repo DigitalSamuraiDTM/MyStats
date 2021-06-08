@@ -1,5 +1,6 @@
 package com.mystats.mystats.MainActivity
 
+import android.annotation.SuppressLint
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
@@ -35,7 +36,9 @@ class MainActivity : AppCompatActivity()  {
 
         super.onDestroy()
     }
+    //@SuppressLint("RestrictedApi")
     private fun init(){
+        //supportActionBar?.setShowHideAnimationEnabled(true);
         hostFrame = findViewById(R.id.ac_host_lay)
         fragmentStartApp = FragmentStartApp()
         //supportFragmentManager.beginTransaction().add(R.id.ac_host_lay,fragmentStartApp).commit()
@@ -43,7 +46,7 @@ class MainActivity : AppCompatActivity()  {
     public fun EnableBars(enable : Boolean){
         if (enable){
             supportActionBar?.show()
-            navView.visibility = View.VISIBLE
+            //navView.visibility = View.VISIBLE
         } else{
             supportActionBar?.hide()
             navView.visibility = View.GONE
