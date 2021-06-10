@@ -1,7 +1,6 @@
   package com.mystats.mystats.my_statistics
 
 import android.content.Context
-import android.content.SharedPreferences
 import android.os.Bundle
 import android.util.Log
 import android.view.*
@@ -9,17 +8,16 @@ import android.widget.Button
 import android.widget.ImageButton
 import android.widget.Toast
 import androidx.constraintlayout.widget.ConstraintLayout
-import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
+import com.mystats.mystats.AdapterRecord
 import com.mystats.mystats.MainActivity.MainActivity
+import com.mystats.mystats.MainApplication
 import com.mystats.mystats.R
 import com.mystats.mystats.rowsData.RowStat
-import kotlinx.coroutines.*
 import moxy.MvpAppCompatFragment
-import moxy.presenter.InjectPresenter
-import moxy.presenter.ProvidePresenter
-import moxy.presenter.ProvidePresenterTag
+import moxy.ktx.moxyPresenter
+import javax.inject.Inject
 
   //TODO загрузочный экран
   //TODO авторизация в несуществующий аккаунт
@@ -39,8 +37,28 @@ class FragmentMyStatistics : MvpAppCompatFragment(), View.OnClickListener, MvpVi
     private lateinit var layoutMainData : ConstraintLayout
     private lateinit var layoutNewRecord : ConstraintLayout
     private lateinit var itemStats : MenuItem
-    @InjectPresenter()
-    public lateinit var presenter : PresenterMyStatistics
+
+      @Inject
+      lateinit var  presenterProvider : javax.inject.Provider<PresenterMyStatistics>
+
+      val presenter by moxyPresenter { presenterProvider.get() }
+
+      override fun onDestroy() {
+          Log.d("FIRESTORE","УБИТ")
+          super.onDestroy()
+      }
+
+      override fun onCreate(savedInstanceState: Bundle?) {
+          MainApplication.getAppComponent().inject(this);
+
+          super.onCreate(savedInstanceState)
+      }
+
+      override fun onDestroyView() {
+          Log.d("FIRESTORE","УБИТ VIEW")
+
+          super.onDestroyView()
+      }
 
       override fun onResume() {
         (activity as MainActivity).EnableBars(true);
@@ -54,7 +72,6 @@ class FragmentMyStatistics : MvpAppCompatFragment(), View.OnClickListener, MvpVi
     ): View? {
         // Inflate the layout for this fragment
         setHasOptionsMenu(true)
-
         return inflater.inflate(R.layout.fragment_my_statistics, container, false)
     }
 
@@ -97,9 +114,8 @@ class FragmentMyStatistics : MvpAppCompatFragment(), View.OnClickListener, MvpVi
             }
             R.id.fragmentNewRecord ->{
                 presenter.addRecordInRecycler(arguments?.getSerializable("NOTE") as ArrayList<RowStat>)
-                showDataLayout()
                 //данные пихать надо куда-то
-
+                Log.d("FIRESTORE", recyclerData.adapter?.itemCount.toString())
             }
         }
 
@@ -199,7 +215,11 @@ class FragmentMyStatistics : MvpAppCompatFragment(), View.OnClickListener, MvpVi
         }
     }
 
-    override fun clearRecycler() {
+      override fun updateRecyclerAdapter(adapter: AdapterRecord) {
+          recyclerData.adapter = adapter;
+      }
+
+      override fun clearRecycler() {
         recyclerData.removeAllViews()
     }
 

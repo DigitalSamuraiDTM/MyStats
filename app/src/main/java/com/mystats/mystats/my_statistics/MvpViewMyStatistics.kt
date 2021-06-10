@@ -1,8 +1,8 @@
 package com.mystats.mystats.my_statistics
 
 import android.os.Bundle
+import com.mystats.mystats.AdapterRecord
 import moxy.MvpView
-import moxy.viewstate.strategy.alias.AddToEndSingle
 import moxy.viewstate.strategy.alias.SingleState
 import moxy.viewstate.strategy.alias.Skip
 
@@ -23,4 +23,6 @@ interface MvpViewMyStatistics : MvpView {
     fun clearRecycler();
     @Skip
     fun addNamesStatsInSubMenu(data : ArrayList<String>);
+    @Skip
+    fun updateRecyclerAdapter(adapter : AdapterRecord);
 }

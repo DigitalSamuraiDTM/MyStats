@@ -9,6 +9,7 @@ import androidx.navigation.fragment.findNavController
 import kotlin.coroutines.*
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.Query
 import com.mystats.mystats.AdapterRecord
 import com.mystats.mystats.DataStats
 import com.mystats.mystats.R
@@ -53,7 +54,6 @@ class PresenterMyStatistics() : MvpPresenter<MvpViewMyStatistics>() {
             nameStat = name
         }
         viewState.showLoading();
-        //recyclerAdapter.notifyItemRangeRemoved(0,recyclerData.size)
         recyclerData = ArrayList<ArrayList<RowStat>>()
         if (clearColumns){
                 columns = null
@@ -63,7 +63,9 @@ class PresenterMyStatistics() : MvpPresenter<MvpViewMyStatistics>() {
             }
         FirebaseFirestore.getInstance().collection("Users")
                 .document(FirebaseAuth.getInstance().currentUser?.uid.toString())
-                .collection("STATS").document(nameStat!!).collection("DATA").get()
+                .collection("STATS").document(nameStat!!).collection("DATA")
+                //todo возможности разной сортировки
+            .orderBy("FIRESTORE_DATESTAMP_CREATE", Query.Direction.DESCENDING).get()
                 .addOnSuccessListener { snap ->
 
                     for (i: Int in 0..snap.size() - 1) {
@@ -162,7 +164,11 @@ class PresenterMyStatistics() : MvpPresenter<MvpViewMyStatistics>() {
 
 
     public fun addRecordInRecycler(data : ArrayList<RowStat>){
-        this.recyclerData.add(data)
+        this.recyclerData.add(0,data)
+        //recyclerAdapter.notifyItemInserted(0);
+        recyclerAdapter.notifyDataSetChanged();
+        recyclerAdapter.setNewData(recyclerData);
+        viewState.updateRecyclerAdapter(recyclerAdapter)
     }
 
 
