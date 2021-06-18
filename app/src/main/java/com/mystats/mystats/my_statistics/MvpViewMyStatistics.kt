@@ -5,7 +5,9 @@ import com.mystats.mystats.AdapterRecord
 import moxy.MvpView
 import moxy.viewstate.strategy.alias.SingleState
 import moxy.viewstate.strategy.alias.Skip
-
+//интерфейс нашего view c использованием Moxy
+//skip - пропускает добавлении команды в viewstate
+//SingleState - добавляет команду, перед этим очищая viewstate
 interface MvpViewMyStatistics : MvpView {
     @SingleState
     fun showLoading();

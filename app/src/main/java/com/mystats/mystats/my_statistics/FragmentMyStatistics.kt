@@ -38,6 +38,9 @@ class FragmentMyStatistics : MvpAppCompatFragment(), View.OnClickListener, MvpVi
     private lateinit var layoutNewRecord : ConstraintLayout
     private lateinit var itemStats : MenuItem
 
+        //добавляя аннотацию inject мы получим объект в это поле, вызывая инъекцию
+    //провайдер дает отложенную инициализацию объекта. То есть инициализация идет тогда
+    //когда мы в первый раз обращаемся к объекту
       @Inject
       lateinit var  presenterProvider : javax.inject.Provider<PresenterMyStatistics>
 
@@ -49,6 +52,7 @@ class FragmentMyStatistics : MvpAppCompatFragment(), View.OnClickListener, MvpVi
       }
 
       override fun onCreate(savedInstanceState: Bundle?) {
+          //инъекция. Насыщаем поля нужными объектами
           MainApplication.getAppComponent().inject(this);
 
           super.onCreate(savedInstanceState)

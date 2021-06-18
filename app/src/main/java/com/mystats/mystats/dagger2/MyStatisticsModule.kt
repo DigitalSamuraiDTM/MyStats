@@ -7,17 +7,17 @@ import dagger.Module
 import dagger.Provides
 import javax.inject.Singleton
 
+//модуль - класс, который содержит провайды
 @Module
 class MyStatisticsModule {
 
+
+    //провайд - функция, которая умеет создавать нужный нам объект
     @Provides
     @Singleton
     @NonNull
     fun getPresenterMyStatistics() : PresenterMyStatistics{
         return PresenterMyStatistics()
     }
-//    @Provides
-//    fun getPresenterProvider() : PresenterPro{
-//
-//    }
+
 }

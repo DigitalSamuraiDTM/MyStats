@@ -14,6 +14,7 @@ class MainApplication : Application() {
         daggerApp = buildDaggers();
         super.onCreate()
     }
+    //даггер будет являться синглтоном и жить вместе с application
     fun buildDaggers() : AppComponent{
         return DaggerAppComponent.builder().myStatisticsModule(MyStatisticsModule()).build();
     }
