@@ -1,2 +1,3 @@
-*.rb linguist-language=Kotlin
+*.kt linguist-language=Kotlin
+*.kt linguist-detectable=true
 *.glyphs linguist-language=OpenStep-Property-List
