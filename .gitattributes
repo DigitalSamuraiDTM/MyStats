@@ -1,2 +1,2 @@
-* linguist-vendored
-*.kt linguist-vendored=true
+*.rb linguist-language=Kotlin
+*.glyphs linguist-language=OpenStep-Property-List
