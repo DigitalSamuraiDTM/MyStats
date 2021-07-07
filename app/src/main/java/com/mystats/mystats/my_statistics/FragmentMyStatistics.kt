@@ -2,6 +2,7 @@
 
 import android.content.Context
 import android.os.Bundle
+import android.os.Parcel
 import android.util.Log
 import android.view.*
 import android.widget.Button
@@ -22,7 +23,8 @@ import javax.inject.Inject
   //TODO загрузочный экран
   //TODO авторизация в несуществующий аккаунт
 //findnavcontroller.navigate() - приводит к тому, что цикл начинается с attach
-class FragmentMyStatistics : MvpAppCompatFragment(), View.OnClickListener, MvpViewMyStatistics {
+class FragmentMyStatistics : MvpAppCompatFragment(), View.OnClickListener,
+      MvpViewMyStatistics{
 
 
       //may be DI?
@@ -46,26 +48,44 @@ class FragmentMyStatistics : MvpAppCompatFragment(), View.OnClickListener, MvpVi
 
       val presenter by moxyPresenter { presenterProvider.get() }
 
-      override fun onDestroy() {
-          Log.d("FIRESTORE","УБИТ")
-          super.onDestroy()
-      }
+
 
       override fun onCreate(savedInstanceState: Bundle?) {
-          //инъекция. Насыщаем поля нужными объектами
+          //инъекция! Насыщаем поля нужными объектами
           MainApplication.getAppComponent().inject(this);
+
 
           super.onCreate(savedInstanceState)
       }
 
-      override fun onDestroyView() {
-          Log.d("FIRESTORE","УБИТ VIEW")
 
-          super.onDestroyView()
-      }
 
       override fun onResume() {
         (activity as MainActivity).EnableBars(true);
+
+
+          //работаю с презентером в onResume, потому что на этой стадии presenter attach with fragment
+          presenter.initActionFromLastFragment();
+
+          when(findNavController().previousBackStackEntry?.destination?.id){
+              R.id.fragmentStartApp, R.id.fragmentSignIn->{
+                  presenter.appWasStarted()
+
+              }
+              R.id.fragmentStatsColumns->{
+                  presenter.newStatsWasCreated(arguments?.getString("NAME"),arguments?.getSerializable("COLUMNS") as ArrayList<RowStat> )
+                  showEmptyStats()
+                  //todo после прихода от создания статистик не нужно с нуля делать запрос, нужно просто добавить только что созданную
+                  //addNamesStatsInSubMenu(nameStats!!)
+              }
+              R.id.fragmentNewRecord ->{
+                  //presenter.addRecordInRecycler(arguments?.getSerializable("NOTE") as ArrayList<RowStat>)
+                  //данные пихать надо куда-то
+              }
+              R.id.fragmentSettingsStats ->{
+                  Log.d("FIRESTORE", "was");
+              }
+          }
         super.onResume()
     }
 
@@ -104,24 +124,6 @@ class FragmentMyStatistics : MvpAppCompatFragment(), View.OnClickListener, MvpVi
         presenter.setPreferences(requireActivity().getSharedPreferences("MyStats", Context.MODE_PRIVATE))
 
             //TODO после всех действий все равно вызывается потому что все равно хранится true
-
-        when(findNavController().previousBackStackEntry?.destination?.id){
-            R.id.fragmentStartApp, R.id.fragmentSignIn->{
-                presenter.appWasStarted()
-
-            }
-            R.id.fragmentStatsColumns->{
-                presenter.newStatsWasCreated(arguments?.getString("NAME"),arguments?.getSerializable("COLUMNS") as ArrayList<RowStat> )
-                showEmptyStats()
-                //todo после прихода от создания статистик не нужно с нуля делать запрос, нужно просто добавить только что созданную
-                //addNamesStatsInSubMenu(nameStats!!)
-            }
-            R.id.fragmentNewRecord ->{
-                presenter.addRecordInRecycler(arguments?.getSerializable("NOTE") as ArrayList<RowStat>)
-                //данные пихать надо куда-то
-                Log.d("FIRESTORE", recyclerData.adapter?.itemCount.toString())
-            }
-        }
 
         super.onViewCreated(view, savedInstanceState)
     }
@@ -168,7 +170,10 @@ class FragmentMyStatistics : MvpAppCompatFragment(), View.OnClickListener, MvpVi
                 (activity as MainActivity).EnableBars(false)
             }
             R.id.fr_myStats_button_SettingsStats ->{
-                findNavController().navigate(R.id.action_myStatistics_to_fragmentSettingsStats);
+                presenter.getNamesStats();
+                findNavController().navigate(R.id.action_myStatistics_to_fragmentSettingsStats,
+                    Bundle().also { it.putString("NameStat",presenter.getNameStat())}
+                );
             }
         }
     }
@@ -227,13 +232,25 @@ class FragmentMyStatistics : MvpAppCompatFragment(), View.OnClickListener, MvpVi
         recyclerData.removeAllViews()
     }
 
-    override fun changeTitleName(nameStat: String?) {
+      override fun changeTitleName(nameStat: String?) {
         requireActivity().setTitle(nameStat)
     }
+
 
       override fun navigateToNewRecord(bundle: Bundle) {
           findNavController().navigate(R.id.action_myStatistics_to_fragmentNewRecord,bundle)
       }
+
+      override fun doActionAfterFragment(numAction: Int) {
+        when(numAction){
+            PresenterMyStatistics.ADD_NEW_RECORD->{
+                presenter.addRecordInRecycler(arguments?.getSerializable("NOTE") as ArrayList<RowStat>)
+            }
+        }
+      }
+
+
+
 
 
   }

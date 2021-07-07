@@ -1,4 +1,4 @@
-package com.mystats.mystats
+package com.mystats.mystats.dialogs_fragments
 
 import android.app.AlertDialog
 import android.app.Dialog
@@ -8,6 +8,7 @@ import android.widget.ArrayAdapter
 import android.widget.EditText
 import android.widget.Spinner
 import androidx.fragment.app.DialogFragment
+import com.mystats.mystats.R
 import com.mystats.mystats.rowsData.*
 
 class DialogNewRow(private var interfa: InterfaceForDialogNewRow) : DialogFragment() {
@@ -24,7 +25,9 @@ class DialogNewRow(private var interfa: InterfaceForDialogNewRow) : DialogFragme
 
             editNameRow  = view.findViewById(R.id.dialog_newRow_edit_nameRow)
             spinnerTypeRow = view.findViewById(R.id.dialog_newRow_spinner_typeRow)
-            val adapter = ArrayAdapter(requireActivity().baseContext,android.R.layout.simple_spinner_item,resources.getStringArray(R.array.typesRows))
+            val adapter = ArrayAdapter(requireActivity().baseContext,android.R.layout.simple_spinner_item,resources.getStringArray(
+                R.array.typesRows
+            ))
             adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
 
             spinnerTypeRow.adapter = adapter

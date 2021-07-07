@@ -5,6 +5,7 @@ import androidx.navigation.fragment.findNavController
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.mystats.mystats.R
+import com.mystats.mystats.my_statistics.InterfaceWithNewRecord
 import com.mystats.mystats.rowsData.RowStat
 
 class PresenterNewRecord {
@@ -14,7 +15,12 @@ class PresenterNewRecord {
         this.view = view;
     }
 
-    public fun createNewRecord(data : ArrayList<RowStat>, nameStat : String, address : Int){
+    public fun createNewRecord(
+        data: ArrayList<RowStat>,
+        nameStat: String,
+        address: Int,
+        callMyStats: InterfaceWithNewRecord?
+    ){
         view.showLoading()
 
         var out = HashMap<String,Any>()
@@ -29,9 +35,11 @@ class PresenterNewRecord {
             .addOnSuccessListener {
                 val bundle = Bundle()
                 bundle.putSerializable("NOTE", data)
+                callMyStats?.addNewRecord()
                 view.findNavController().navigate(R.id.action_fragmentNewRecord_to_myStatistics, bundle)
             }.addOnFailureListener{
                 view.showError()
             }
     }
 }
+//TODO колонки не должны повторяться

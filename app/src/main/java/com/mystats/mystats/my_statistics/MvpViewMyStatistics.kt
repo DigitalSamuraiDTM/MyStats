@@ -25,6 +25,8 @@ interface MvpViewMyStatistics : MvpView {
     fun clearRecycler();
     @Skip
     fun addNamesStatsInSubMenu(data : ArrayList<String>);
-    @Skip
+    @SingleState
     fun updateRecyclerAdapter(adapter : AdapterRecord);
+    @Skip
+    fun doActionAfterFragment(numAction : Int)
 }

@@ -1,37 +1,36 @@
 package com.mystats.mystats.my_statistics
 
-import android.content.Context
 import android.content.SharedPreferences
 import android.os.Bundle
 import android.util.Log
 import android.view.ViewGroup
-import androidx.navigation.fragment.findNavController
 import kotlin.coroutines.*
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
 import com.mystats.mystats.AdapterRecord
-import com.mystats.mystats.DataStats
-import com.mystats.mystats.R
 import com.mystats.mystats.rowsData.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.runBlocking
 import moxy.InjectViewState
 import moxy.MvpPresenter
 
 //TODO красота отображение recyclerView.
 // ! не работают режимы анфокуса. Сортировка записей по дате создания
 @InjectViewState
-class PresenterMyStatistics() : MvpPresenter<MvpViewMyStatistics>() {
+class PresenterMyStatistics() : MvpPresenter<MvpViewMyStatistics>(), InterfaceWithNewRecord {
     private  var columns : ArrayList<RowStat>? = null
     private lateinit var preferences : SharedPreferences
     private  var sizeStat : Int = 0
+    private  var lastAction : Int = 0
     private  var nameStat : String? = null
     private  var recyclerData =  ArrayList<ArrayList<RowStat>>()
     private  var recyclerAdapter : AdapterRecord;
     private var Started : Boolean = false;
+    override fun attachView(view: MvpViewMyStatistics?) {
+        super.attachView(view)
+    }
 
     public fun setPreferences(pref : SharedPreferences){
         preferences = pref;
@@ -151,24 +150,21 @@ class PresenterMyStatistics() : MvpPresenter<MvpViewMyStatistics>() {
                 }
     }
 
-    public fun goToNewRecord(){
-        val bundle = Bundle()
-        //columns!!.map { it.clone() }) as ArrayList<RowStat>
-        bundle.putSerializable("COLUMNS", (columns!!.map { it.clone() } as ArrayList<RowStat>))
-        bundle.putString("NAMESTAT",nameStat)
+    public fun goToNewRecord() {
         //todo нужно ли нам будет знать о том, какое имя у документа с записью?
-        sizeStat = 3
-        bundle.putInt("SIZESTAT",sizeStat)
-        viewState.navigateToNewRecord(bundle);
+        viewState.navigateToNewRecord(Bundle().also {
+            it.putSerializable("MS", this as InterfaceWithNewRecord)
+            it.putInt("SIZESTAT",sizeStat)
+            it.putSerializable("COLUMNS", (columns!!.map { it.clone() } as ArrayList<RowStat>))
+            it.putString("NAMESTAT",nameStat)
+        });
     }
 
 
     public fun addRecordInRecycler(data : ArrayList<RowStat>){
         this.recyclerData.add(0,data)
-        //recyclerAdapter.notifyItemInserted(0);
-        recyclerAdapter.notifyDataSetChanged();
         recyclerAdapter.setNewData(recyclerData);
-        viewState.updateRecyclerAdapter(recyclerAdapter)
+        viewState.showDataLayout()
     }
 
 
@@ -200,6 +196,23 @@ class PresenterMyStatistics() : MvpPresenter<MvpViewMyStatistics>() {
             }
         }
     }
+    fun getNameStat() : String? {
+        return nameStat;
+    }
 
+    override fun addNewRecord() {
+        lastAction = ADD_NEW_RECORD;
+    }
 
+    fun initActionFromLastFragment(){
+        viewState.doActionAfterFragment(lastAction)
+        lastAction = NOTHING;
+    }
+
+    companion object{
+        const val ADD_NEW_RECORD = 1;
+        const val SETTINGS_STATS_WAS_DELETE = 2;
+        const val NEW_STATS_WAS_CREATED = 3;
+        const val NOTHING = -1;
+    }
 }

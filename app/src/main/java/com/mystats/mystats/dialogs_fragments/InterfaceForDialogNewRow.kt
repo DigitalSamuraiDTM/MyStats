@@ -1,4 +1,4 @@
-package com.mystats.mystats
+package com.mystats.mystats.dialogs_fragments
 
 import com.mystats.mystats.rowsData.RowStat
 

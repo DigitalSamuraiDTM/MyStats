@@ -6,11 +6,11 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.WindowManager
 import android.widget.Button
 import androidx.recyclerview.widget.RecyclerView
 import com.mystats.mystats.AdapterRecord
 import com.mystats.mystats.R
+import com.mystats.mystats.my_statistics.InterfaceWithNewRecord
 import com.mystats.mystats.rowsData.RowStat
 
 
@@ -19,8 +19,6 @@ class FragmentNewRecord : Fragment() {
     private lateinit var dataList : ArrayList<ArrayList<RowStat>>
     private lateinit var buttonFinish : Button
     private lateinit var  presenter : PresenterNewRecord
-    private lateinit var  nameStat : String
-    private  var  sizeStat : Int = 0
     private lateinit var  adapterRecord : AdapterRecord
     override fun onAttach(context: Context) {
         presenter = PresenterNewRecord(this)
@@ -40,18 +38,19 @@ class FragmentNewRecord : Fragment() {
             //this.activity?.window?.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
             //todo будут проверки на нулевость?
             adapterRecord.confirmData()
-            presenter.createNewRecord(dataList[0],nameStat,sizeStat)
+            presenter.createNewRecord(dataList[0],
+                arguments?.getString("NAMESTAT").toString(),
+                arguments?.getInt("SIZESTAT")!!.toInt(),
+                arguments?.getSerializable("MS") as InterfaceWithNewRecord?
+            )
 
         }
 
         dataList = ArrayList()
-        //val s : ArrayList<RowStat> = (arguments?.getSerializable("COLUMNS") as ArrayList<RowStat>?)!!
         adapterRecord = AdapterRecord(dataList,true)
         recyclerRecord.adapter = adapterRecord
 
         dataList.add(arguments?.getSerializable("COLUMNS")!! as java.util.ArrayList<RowStat>)
-        nameStat = arguments?.getString("NAMESTAT").toString()
-        sizeStat = arguments?.getInt("SIZESTAT")!!.toInt()
         adapterRecord.notifyDataSetChanged()
         super.onViewCreated(view, savedInstanceState)
     }

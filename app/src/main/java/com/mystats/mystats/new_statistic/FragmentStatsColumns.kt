@@ -9,16 +9,14 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.Toast
 import androidx.constraintlayout.widget.ConstraintLayout
-import androidx.core.widget.NestedScrollView
-import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
-import com.mystats.mystats.DialogNewRow
-import com.mystats.mystats.InterfaceForDialogNewRow
+import com.mystats.mystats.dialogs_fragments.DialogNewRow
+import com.mystats.mystats.dialogs_fragments.InterfaceForDialogNewRow
 import com.mystats.mystats.R
 import com.mystats.mystats.rowsData.RowStat
 
 
-class FragmentStatsColumns : Fragment(), InterfaceForDialogNewRow{
+class FragmentStatsColumns : Fragment(), InterfaceForDialogNewRow {
     private lateinit var recyclerColumns : RecyclerView
     private lateinit var buttonNewRow : Button
     private lateinit var buttonReady : Button

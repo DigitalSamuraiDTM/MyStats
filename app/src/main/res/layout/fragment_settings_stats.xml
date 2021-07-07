@@ -15,12 +15,12 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical" >
+            android:orientation="vertical">
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                tools:visibility="gone">
+                android:visibility="gone">
 
                 <TextView
                     android:id="@+id/fr_settingsStats_text_viewData"
@@ -85,7 +85,8 @@
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="10dp">
+                android:layout_marginTop="10dp"
+                android:visibility="gone">
 
                 <SeekBar
                     android:id="@+id/seekBar"
@@ -138,10 +139,12 @@
                 tools:visibility="visible">
 
                 <Button
-                    android:id="@+id/button"
+                    android:id="@+id/fr_settingsStats_button_deleteStats"
+                    style="@style/redButton"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="delete stats"
+                    android:theme="@style/redButton"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
