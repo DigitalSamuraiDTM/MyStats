@@ -19,7 +19,9 @@ import moxy.MvpPresenter
 //TODO красота отображение recyclerView.
 // ! не работают режимы анфокуса. Сортировка записей по дате создания
 @InjectViewState
-class PresenterMyStatistics() : MvpPresenter<MvpViewMyStatistics>(), InterfaceWithNewRecord {
+class PresenterMyStatistics() : MvpPresenter<MvpViewMyStatistics>(),
+    InterfaceWithNewRecord,
+    InterfaceWithSettingsStats{
     private  var columns : ArrayList<RowStat>? = null
     private lateinit var preferences : SharedPreferences
     private  var sizeStat : Int = 0
@@ -136,7 +138,7 @@ class PresenterMyStatistics() : MvpPresenter<MvpViewMyStatistics>(), InterfaceWi
         return nameStat
     }
 
-    fun getNamesStats(){
+    fun updateMenuNamesStats(){
         //todo сохранять их в презентер, чтобы не делать лишний запрос
         FirebaseFirestore.getInstance().collection("Users")
                 .document(FirebaseAuth.getInstance().currentUser?.uid.toString())
@@ -150,17 +152,6 @@ class PresenterMyStatistics() : MvpPresenter<MvpViewMyStatistics>(), InterfaceWi
                 }
     }
 
-    public fun goToNewRecord() {
-        //todo нужно ли нам будет знать о том, какое имя у документа с записью?
-        viewState.navigateToNewRecord(Bundle().also {
-            it.putSerializable("MS", this as InterfaceWithNewRecord)
-            it.putInt("SIZESTAT",sizeStat)
-            it.putSerializable("COLUMNS", (columns!!.map { it.clone() } as ArrayList<RowStat>))
-            it.putString("NAMESTAT",nameStat)
-        });
-    }
-
-
     public fun addRecordInRecycler(data : ArrayList<RowStat>){
         this.recyclerData.add(0,data)
         recyclerAdapter.setNewData(recyclerData);
@@ -173,6 +164,23 @@ class PresenterMyStatistics() : MvpPresenter<MvpViewMyStatistics>(), InterfaceWi
         return recyclerAdapter
     }
 
+
+    public fun goToNewRecord() {
+        //todo нужно ли нам будет знать о том, какое имя у документа с записью?
+        viewState.navigateToNewRecord(Bundle().also {
+            it.putSerializable("MS", this as InterfaceWithNewRecord)
+            it.putInt("SIZESTAT",sizeStat)
+            it.putSerializable("COLUMNS", (columns!!.map { it.clone() } as ArrayList<RowStat>))
+            it.putString("NAMESTAT",nameStat)
+        });
+    }
+
+    fun goToSettings() {
+        viewState.navigateToSettings(Bundle().also {
+            it.putSerializable("MS", this as InterfaceWithSettingsStats)
+        })
+    }
+
     fun newStatsWasCreated(nameStat: String?, columns: ArrayList<RowStat>) {
         recyclerData.clear()
         this.nameStat = nameStat
@@ -182,7 +190,6 @@ class PresenterMyStatistics() : MvpPresenter<MvpViewMyStatistics>(), InterfaceWi
         viewState.changeTitleName(nameStat)
 
     }
-
     fun appWasStarted() {
         if (!Started) {
             Started = true
@@ -190,12 +197,12 @@ class PresenterMyStatistics() : MvpPresenter<MvpViewMyStatistics>(), InterfaceWi
             if (nameStat == null) {
                 viewState.showNewStats()
             } else {
-                //TODO не меняет тайтл плюс как-то криво работает ViewState
                 viewState.changeTitleName(nameStat)
                 this.getDataFromStats(null, false)
             }
         }
     }
+
     fun getNameStat() : String? {
         return nameStat;
     }
@@ -207,6 +214,10 @@ class PresenterMyStatistics() : MvpPresenter<MvpViewMyStatistics>(), InterfaceWi
     fun initActionFromLastFragment(){
         viewState.doActionAfterFragment(lastAction)
         lastAction = NOTHING;
+    }
+
+    override fun statsWasDelete() {
+        lastAction = SETTINGS_STATS_WAS_DELETE;
     }
 
     companion object{

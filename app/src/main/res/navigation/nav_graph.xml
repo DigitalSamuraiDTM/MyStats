@@ -140,5 +140,9 @@
     <fragment
         android:id="@+id/fragmentSettingsStats"
         android:name="com.mystats.mystats.settingsStats.FragmentSettingsStats"
-        android:label="FragmentSettingsStats" />
+        android:label="FragmentSettingsStats" >
+        <action
+            android:id="@+id/action_fragmentSettingsStats_to_myStatistics"
+            app:destination="@id/myStatistics" />
+    </fragment>
 </navigation>

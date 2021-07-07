@@ -2,7 +2,6 @@
 
 import android.content.Context
 import android.os.Bundle
-import android.os.Parcel
 import android.util.Log
 import android.view.*
 import android.widget.Button
@@ -77,13 +76,6 @@ class FragmentMyStatistics : MvpAppCompatFragment(), View.OnClickListener,
                   showEmptyStats()
                   //todo после прихода от создания статистик не нужно с нуля делать запрос, нужно просто добавить только что созданную
                   //addNamesStatsInSubMenu(nameStats!!)
-              }
-              R.id.fragmentNewRecord ->{
-                  //presenter.addRecordInRecycler(arguments?.getSerializable("NOTE") as ArrayList<RowStat>)
-                  //данные пихать надо куда-то
-              }
-              R.id.fragmentSettingsStats ->{
-                  Log.d("FIRESTORE", "was");
               }
           }
         super.onResume()
@@ -170,7 +162,7 @@ class FragmentMyStatistics : MvpAppCompatFragment(), View.OnClickListener,
                 (activity as MainActivity).EnableBars(false)
             }
             R.id.fr_myStats_button_SettingsStats ->{
-                presenter.getNamesStats();
+                presenter.goToSettings();
                 findNavController().navigate(R.id.action_myStatistics_to_fragmentSettingsStats,
                     Bundle().also { it.putString("NameStat",presenter.getNameStat())}
                 );
@@ -185,7 +177,7 @@ class FragmentMyStatistics : MvpAppCompatFragment(), View.OnClickListener,
         itemStats = menu.findItem(R.id.item_myStats_myStats);
 
         super.onCreateOptionsMenu(menu, inflater)
-        presenter.getNamesStats()
+        presenter.updateMenuNamesStats()
     }
 
 
@@ -241,10 +233,18 @@ class FragmentMyStatistics : MvpAppCompatFragment(), View.OnClickListener,
           findNavController().navigate(R.id.action_myStatistics_to_fragmentNewRecord,bundle)
       }
 
+      override fun navigateToSettings(bundle: Bundle) {
+          findNavController().navigate(R.id.action_myStatistics_to_fragmentSettingsStats, bundle);
+      }
+
       override fun doActionAfterFragment(numAction: Int) {
         when(numAction){
             PresenterMyStatistics.ADD_NEW_RECORD->{
                 presenter.addRecordInRecycler(arguments?.getSerializable("NOTE") as ArrayList<RowStat>)
+            }
+            PresenterMyStatistics.SETTINGS_STATS_WAS_DELETE->{
+                showNewStats();
+                presenter.updateMenuNamesStats()
             }
         }
       }

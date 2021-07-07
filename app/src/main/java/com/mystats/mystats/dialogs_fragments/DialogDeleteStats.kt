@@ -43,7 +43,7 @@ private var finish : InterfaceForDialogDeleteStats) : DialogFragment() {
                                 Toast.makeText(MainApplication.getContext(),nameStat+" was burned!", Toast.LENGTH_SHORT).show()
                                 // финиш - делаем колл к настройкам, чтобы они захлопнулись
                                 dialog?.dismiss()
-                                finish.finish()
+                                finish.FinishWhenStatsWasDelete()
                             }.addOnFailureListener{
                                 Toast.makeText(MainApplication.getContext(),"Oops, something went wrong", Toast.LENGTH_SHORT).show()
                             }

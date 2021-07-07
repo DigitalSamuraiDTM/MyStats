@@ -11,6 +11,7 @@ import com.google.android.gms.tasks.OnCompleteListener
 import com.mystats.mystats.R
 import com.mystats.mystats.dialogs_fragments.DialogDeleteStats
 import com.mystats.mystats.dialogs_fragments.InterfaceForDialogDeleteStats
+import com.mystats.mystats.my_statistics.InterfaceWithSettingsStats
 import moxy.MvpAppCompatFragment
 import moxy.MvpFragment
 
@@ -43,7 +44,8 @@ class FragmentSettingsStats : MvpAppCompatFragment(), View.OnClickListener, Inte
         }
     }
 
-    override fun finish() {
-
+    override fun FinishWhenStatsWasDelete() {
+        (arguments?.getSerializable("MS") as InterfaceWithSettingsStats).statsWasDelete()
+        findNavController().navigate(R.id.action_fragmentSettingsStats_to_myStatistics);
     }
 }

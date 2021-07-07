@@ -22,6 +22,8 @@ interface MvpViewMyStatistics : MvpView {
     @Skip
     fun navigateToNewRecord(bundle : Bundle);
     @Skip
+    fun navigateToSettings(bundle : Bundle);
+    @Skip
     fun clearRecycler();
     @Skip
     fun addNamesStatsInSubMenu(data : ArrayList<String>);
