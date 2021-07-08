@@ -19,7 +19,6 @@ import moxy.MvpAppCompatFragment
 import moxy.ktx.moxyPresenter
 import javax.inject.Inject
 
-  //TODO загрузочный экран
   //TODO авторизация в несуществующий аккаунт
 //findnavcontroller.navigate() - приводит к тому, что цикл начинается с attach
 class FragmentMyStatistics : MvpAppCompatFragment(), View.OnClickListener,
@@ -71,12 +70,7 @@ class FragmentMyStatistics : MvpAppCompatFragment(), View.OnClickListener,
                   presenter.appWasStarted()
 
               }
-              R.id.fragmentStatsColumns->{
-                  presenter.newStatsWasCreated(arguments?.getString("NAME"),arguments?.getSerializable("COLUMNS") as ArrayList<RowStat> )
-                  showEmptyStats()
-                  //todo после прихода от создания статистик не нужно с нуля делать запрос, нужно просто добавить только что созданную
-                  //addNamesStatsInSubMenu(nameStats!!)
-              }
+
           }
         super.onResume()
     }
@@ -114,8 +108,6 @@ class FragmentMyStatistics : MvpAppCompatFragment(), View.OnClickListener,
         recyclerData.adapter = presenter.getRecyclerAdapter()
         presenter.setRootInAdapter(recyclerData)
         presenter.setPreferences(requireActivity().getSharedPreferences("MyStats", Context.MODE_PRIVATE))
-
-            //TODO после всех действий все равно вызывается потому что все равно хранится true
 
         super.onViewCreated(view, savedInstanceState)
     }
@@ -185,7 +177,7 @@ class FragmentMyStatistics : MvpAppCompatFragment(), View.OnClickListener,
         when(item.itemId){
             R.id.item_myStats_newStats->{
                 (activity as MainActivity).EnableBars(false)
-                findNavController().navigate(R.id.action_myStatistics_to_fragmentTemplatesStats);
+                presenter.goToNewStats();
             }
             R.id.item_myStats_settings->{
             }
@@ -228,13 +220,16 @@ class FragmentMyStatistics : MvpAppCompatFragment(), View.OnClickListener,
         requireActivity().setTitle(nameStat)
     }
 
-
       override fun navigateToNewRecord(bundle: Bundle) {
           findNavController().navigate(R.id.action_myStatistics_to_fragmentNewRecord,bundle)
       }
 
       override fun navigateToSettings(bundle: Bundle) {
           findNavController().navigate(R.id.action_myStatistics_to_fragmentSettingsStats, bundle);
+      }
+
+      override fun navigateToCreatingNewStats(bundle: Bundle) {
+          findNavController().navigate(R.id.action_myStatistics_to_fragmentTemplatesStats, bundle);
       }
 
       override fun doActionAfterFragment(numAction: Int) {
@@ -245,6 +240,13 @@ class FragmentMyStatistics : MvpAppCompatFragment(), View.OnClickListener,
             PresenterMyStatistics.SETTINGS_STATS_WAS_DELETE->{
                 showNewStats();
                 presenter.updateMenuNamesStats()
+            }
+            PresenterMyStatistics.NEW_STATS_WAS_CREATED->{
+                presenter.newStatsWasCreated(arguments?.getString("NAME"),arguments?.getSerializable("COLUMNS") as ArrayList<RowStat> )
+                showEmptyStats()
+                //todo после прихода от создания статистик не нужно с нуля делать запрос, нужно просто добавить только что созданную
+                //addNamesStatsInSubMenu(nameStats!!)
+
             }
         }
       }

@@ -21,10 +21,12 @@ import moxy.MvpPresenter
 @InjectViewState
 class PresenterMyStatistics() : MvpPresenter<MvpViewMyStatistics>(),
     InterfaceWithNewRecord,
-    InterfaceWithSettingsStats{
+    InterfaceWithSettingsStats,
+    InterfaceWithCreatingNewStats{
     private  var columns : ArrayList<RowStat>? = null
     private lateinit var preferences : SharedPreferences
     private  var sizeStat : Int = 0
+
     private  var lastAction : Int = 0
     private  var nameStat : String? = null
     private  var recyclerData =  ArrayList<ArrayList<RowStat>>()
@@ -33,7 +35,6 @@ class PresenterMyStatistics() : MvpPresenter<MvpViewMyStatistics>(),
     override fun attachView(view: MvpViewMyStatistics?) {
         super.attachView(view)
     }
-
     public fun setPreferences(pref : SharedPreferences){
         preferences = pref;
     }
@@ -49,6 +50,7 @@ class PresenterMyStatistics() : MvpPresenter<MvpViewMyStatistics>(),
     public fun setDataInAdapter(adapter : AdapterRecord){
         adapter.setArrayData(recyclerData)
     }
+
     public  fun getDataFromStats(name : String?, clearColumns : Boolean) = GlobalScope.launch(Dispatchers.Unconfined) {
             //todo использую диспетчер, который работает вместе с главным потоком. Правильно ли это?
         if (name!=null){
@@ -91,8 +93,6 @@ class PresenterMyStatistics() : MvpPresenter<MvpViewMyStatistics>(),
                     //todo обработка ошибок
                 }
     }
-
-
      suspend  fun getColumnsFromStats(name : String) : ArrayList<RowStat>? {
          return suspendCoroutine { continuation ->
              FirebaseFirestore.getInstance().collection("Users")
@@ -130,6 +130,8 @@ class PresenterMyStatistics() : MvpPresenter<MvpViewMyStatistics>(),
                  }
          }
      }
+
+
     fun saveLastStat(name : String?){
         preferences.edit().putString("LastStatName",name).apply()
     }
@@ -137,7 +139,6 @@ class PresenterMyStatistics() : MvpPresenter<MvpViewMyStatistics>(),
         nameStat = preferences.getString("LastStatName", null);
         return nameStat
     }
-
     fun updateMenuNamesStats(){
         //todo сохранять их в презентер, чтобы не делать лишний запрос
         FirebaseFirestore.getInstance().collection("Users")
@@ -158,7 +159,6 @@ class PresenterMyStatistics() : MvpPresenter<MvpViewMyStatistics>(),
         viewState.showDataLayout()
     }
 
-
     //Правильно ли?
     fun getRecyclerAdapter(): AdapterRecord {
         return recyclerAdapter
@@ -175,6 +175,7 @@ class PresenterMyStatistics() : MvpPresenter<MvpViewMyStatistics>(),
         });
     }
 
+
     fun goToSettings() {
         viewState.navigateToSettings(Bundle().also {
             it.putSerializable("MS", this as InterfaceWithSettingsStats)
@@ -190,6 +191,7 @@ class PresenterMyStatistics() : MvpPresenter<MvpViewMyStatistics>(),
         viewState.changeTitleName(nameStat)
 
     }
+
     fun appWasStarted() {
         if (!Started) {
             Started = true
@@ -202,13 +204,20 @@ class PresenterMyStatistics() : MvpPresenter<MvpViewMyStatistics>(),
             }
         }
     }
-
     fun getNameStat() : String? {
         return nameStat;
     }
 
+    override fun newStatsWasCreated() {
+        lastAction = NEW_STATS_WAS_CREATED;
+    }
+
     override fun addNewRecord() {
         lastAction = ADD_NEW_RECORD;
+    }
+
+    override fun statsWasDelete() {
+        lastAction = SETTINGS_STATS_WAS_DELETE;
     }
 
     fun initActionFromLastFragment(){
@@ -216,8 +225,10 @@ class PresenterMyStatistics() : MvpPresenter<MvpViewMyStatistics>(),
         lastAction = NOTHING;
     }
 
-    override fun statsWasDelete() {
-        lastAction = SETTINGS_STATS_WAS_DELETE;
+    fun goToNewStats() {
+        viewState.navigateToCreatingNewStats(Bundle().also {
+            it.putSerializable("MS", this as InterfaceWithCreatingNewStats)
+        })
     }
 
     companion object{

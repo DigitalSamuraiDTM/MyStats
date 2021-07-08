@@ -8,10 +8,12 @@ import androidx.navigation.fragment.findNavController
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.mystats.mystats.R
+import com.mystats.mystats.my_statistics.InterfaceWithCreatingNewStats
 import com.mystats.mystats.rowsData.RowStat
 import java.util.jar.Attributes
 
 class PresenterNewStats {
+    private lateinit var interfaceMyStats: InterfaceWithCreatingNewStats
     private lateinit var NameStats : String
     val userStore = FirebaseFirestore.getInstance().collection("Users").document(FirebaseAuth.getInstance().currentUser?.uid.toString())
     companion object {
@@ -84,11 +86,16 @@ class PresenterNewStats {
             val bundle  = Bundle()
             bundle.putSerializable("COLUMNS", columns)
             bundle.putString("NAME", NameStats)
+            interfaceMyStats.newStatsWasCreated();
             view.findNavController().navigate(R.id.action_fragmentStatsColumns_to_myStatistics, bundle)
         }.addOnFailureListener{
             view.hideLoading()
             view.showError(2)
         }
+    }
+
+    fun setMyStatsInterface(interfaceWithCreatingNewStats: InterfaceWithCreatingNewStats) {
+        this.interfaceMyStats = interfaceWithCreatingNewStats;
     }
 
 }

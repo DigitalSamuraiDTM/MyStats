@@ -20,6 +20,8 @@ interface MvpViewMyStatistics : MvpView {
     @Skip
     fun changeTitleName(nameStat : String?);
     @Skip
+    fun navigateToCreatingNewStats(bundle : Bundle);
+    @Skip
     fun navigateToNewRecord(bundle : Bundle);
     @Skip
     fun navigateToSettings(bundle : Bundle);

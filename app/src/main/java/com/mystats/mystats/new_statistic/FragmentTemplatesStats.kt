@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import android.widget.Button
 import androidx.navigation.fragment.findNavController
 import com.mystats.mystats.R
+import com.mystats.mystats.my_statistics.InterfaceWithCreatingNewStats
 
 
 class FragmentTemplatesStats : Fragment() {
@@ -22,6 +23,7 @@ class FragmentTemplatesStats : Fragment() {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        PresenterNewStats.getInstance().setMyStatsInterface(arguments?.getSerializable("MS") as InterfaceWithCreatingNewStats)
         buttonCustomTemplate = view.findViewById(R.id.fr_templatesStats_button_customStats)
         buttonCustomTemplate.setOnClickListener(object : View.OnClickListener{
             override fun onClick(p0: View?) {
