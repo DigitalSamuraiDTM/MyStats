@@ -47,7 +47,6 @@ class FragmentNewRecord : Fragment() {
             adapterRecord.confirmData()
             presenter.createNewRecord(dataList[0],
                 arguments?.getString("NAMESTAT").toString(),
-                arguments?.getInt("SIZESTAT")!!.toInt(),
                 arguments?.getSerializable("MS") as InterfaceWithNewRecord?
             )
 

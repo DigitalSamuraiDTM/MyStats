@@ -255,6 +255,5 @@ class FragmentMyStatistics : MvpAppCompatFragment(), View.OnClickListener,
 
 
 
-//TODO дата класс
 
   }
