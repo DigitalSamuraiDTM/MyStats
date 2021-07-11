@@ -23,7 +23,7 @@ class FragmentTemplatesStats : Fragment() {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        PresenterNewStats.getInstance().setMyStatsInterface(arguments?.getSerializable("MS") as InterfaceWithCreatingNewStats)
+        PresenterNewStats.getInstance()?.setMyStatsInterface(arguments?.getSerializable("MS") as InterfaceWithCreatingNewStats)
         buttonCustomTemplate = view.findViewById(R.id.fr_templatesStats_button_customStats)
         buttonCustomTemplate.setOnClickListener(object : View.OnClickListener{
             override fun onClick(p0: View?) {

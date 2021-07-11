@@ -9,6 +9,7 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.mystats.mystats.R
 import com.mystats.mystats.my_statistics.InterfaceWithCreatingNewStats
+import com.mystats.mystats.rowsData.NoteStats
 import com.mystats.mystats.rowsData.RowStat
 import java.util.jar.Attributes
 
@@ -83,11 +84,12 @@ class PresenterNewStats {
         val data = hashMapOf("STATNAME" to NameStats)
         userStore.collection("STATS").document(NameStats).set(data).addOnSuccessListener {
             //cкорее всего так делать неправильно, но у меня нет друзей, которые могут пояснить за это :(
-            val bundle  = Bundle()
-            bundle.putSerializable("COLUMNS", columns)
-            bundle.putString("NAME", NameStats)
             interfaceMyStats.newStatsWasCreated();
-            view.findNavController().navigate(R.id.action_fragmentStatsColumns_to_myStatistics, bundle)
+            view.findNavController().navigate(R.id.action_fragmentStatsColumns_to_myStatistics,
+                Bundle().also {
+                    it.putSerializable("COLUMNS", NoteStats(columns, null))
+                    it.putString("NAME", NameStats)
+                })
         }.addOnFailureListener{
             view.hideLoading()
             view.showError(2)

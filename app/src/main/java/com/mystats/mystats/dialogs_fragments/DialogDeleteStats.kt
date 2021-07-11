@@ -31,7 +31,7 @@ private var finish : InterfaceForDialogDeleteStats) : DialogFragment() {
             editNameStats = view.findViewById(R.id.dialog_deleteStats_edit_nameStats);
             editNameStats.setHint(nameStat);
 
-            builder.setTitle("Deleting statistics").setView(view)
+            builder.setView(view)
                 .setPositiveButton("Delete", DialogInterface.OnClickListener{ dialogInterface, i ->
                     if (nameStat==editNameStats.text.toString()){
 

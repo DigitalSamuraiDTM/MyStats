@@ -6,15 +6,16 @@ import android.widget.LinearLayout
 import androidx.core.content.ContextCompat
 import androidx.core.content.res.ResourcesCompat
 import androidx.recyclerview.widget.RecyclerView
+import com.mystats.mystats.rowsData.NoteStats
 import com.mystats.mystats.rowsData.RowStat
 
 class AdapterRecord : RecyclerView.Adapter<AdapterRecord.ViewHolder> {
 
-    private var data = ArrayList<ArrayList<RowStat>>()
+    private var data = ArrayList<NoteStats>()
     private var writable : Boolean
     private lateinit var root : ViewGroup
 
-    constructor(data: ArrayList<ArrayList<RowStat>>, writable : Boolean){
+    constructor(data: ArrayList<NoteStats>, writable : Boolean){
         this.data = data;
         this.writable = writable
     }
@@ -26,13 +27,13 @@ class AdapterRecord : RecyclerView.Adapter<AdapterRecord.ViewHolder> {
         this.writable = writable
     }
 
-    public fun setArrayData(data: ArrayList<ArrayList<RowStat>>){
+    public fun setArrayData(data: ArrayList<NoteStats>){
         this.data = data
     }
 
     public fun confirmData(){
-        for(i : Int in 0..data[0].size-1){
-            data[0][i].confirmDataInstallation()
+        for(i : Int in 0..data[0].data.size-1){
+            data[0].data[i].confirmDataInstallation()
         }
     }
 
@@ -55,9 +56,9 @@ class AdapterRecord : RecyclerView.Adapter<AdapterRecord.ViewHolder> {
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
 
         val lay : LinearLayout = holder.itemView.findViewById("item_recyclerRecord_mainLay".hashCode())
-        for(i : Int in 0..data[position].size-1){
+        for(i : Int in 0..data[position].data.size-1){
                 //todo навести красоту
-            val v = data[position][i].drawRowToViewData(writable)
+            val v = data[position].data[i].drawRowToViewData(writable)
             lay.addView(v)
 
         }
@@ -67,7 +68,7 @@ class AdapterRecord : RecyclerView.Adapter<AdapterRecord.ViewHolder> {
         return data.size
     }
 
-    public fun setNewData(data : ArrayList<ArrayList<RowStat>>){
+    public fun setNewData(data : ArrayList<NoteStats>){
         this.data.clear()
         this.data.addAll(data)
         this.notifyDataSetChanged()

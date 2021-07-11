@@ -37,7 +37,7 @@ class FragmentSettingsStats : MvpAppCompatFragment(), View.OnClickListener, Inte
     override fun onClick(p0: View?) {
         when(p0?.id){
             R.id.fr_settingsStats_button_deleteStats ->{
-                val deleteDialog = DialogDeleteStats(arguments?.getString("NameStat","s")!!, this)
+                val deleteDialog = DialogDeleteStats(arguments?.getString("NameStat","null")!!, this)
                 deleteDialog.show(requireActivity().supportFragmentManager, "DeleteStats")
 
             }

@@ -6,6 +6,7 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.mystats.mystats.R
 import com.mystats.mystats.my_statistics.InterfaceWithNewRecord
+import com.mystats.mystats.rowsData.NoteStats
 import com.mystats.mystats.rowsData.RowStat
 
 class PresenterNewRecord {
@@ -16,7 +17,7 @@ class PresenterNewRecord {
     }
 
     public fun createNewRecord(
-        data: ArrayList<RowStat>,
+        data: NoteStats,
         nameStat: String,
         address: Int,
         callMyStats: InterfaceWithNewRecord?
@@ -24,8 +25,8 @@ class PresenterNewRecord {
         view.showLoading()
 
         var out = HashMap<String,Any>()
-        for(i : Int in 0..data.size-1){
-            out.put(data[i].getNameRow().toString(), data[i].getData()!!)
+        for(i : Int in 0..data.data.size-1){
+            out.put(data.data[i].getNameRow().toString(), data.data[i].getData()!!)
         }
         out.put("FIRESTORE_DATESTAMP_CREATE",com.google.firebase.firestore.FieldValue.serverTimestamp())
         FirebaseFirestore.getInstance().collection("Users")

@@ -13,12 +13,13 @@ import androidx.recyclerview.widget.RecyclerView
 import com.mystats.mystats.AdapterRecord
 import com.mystats.mystats.R
 import com.mystats.mystats.my_statistics.InterfaceWithNewRecord
+import com.mystats.mystats.rowsData.NoteStats
 import com.mystats.mystats.rowsData.RowStat
 
 
 class FragmentNewRecord : Fragment() {
     private lateinit var recyclerRecord : RecyclerView
-    private lateinit var dataList : ArrayList<ArrayList<RowStat>>
+    private lateinit var dataList : ArrayList<NoteStats>
     private lateinit var buttonFinish : Button
     private lateinit var  presenter : PresenterNewRecord
     private lateinit var  adapterRecord : AdapterRecord
@@ -56,7 +57,7 @@ class FragmentNewRecord : Fragment() {
         adapterRecord = AdapterRecord(dataList,true)
         recyclerRecord.adapter = adapterRecord
 
-        dataList.add(arguments?.getSerializable("COLUMNS")!! as java.util.ArrayList<RowStat>)
+        dataList.add(arguments?.getSerializable("COLUMNS")!! as NoteStats)
         adapterRecord.notifyDataSetChanged()
         super.onViewCreated(view, savedInstanceState)
     }

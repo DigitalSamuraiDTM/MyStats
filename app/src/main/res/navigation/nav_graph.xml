@@ -140,6 +140,7 @@
     <fragment
         android:id="@+id/fragmentSettingsStats"
         android:name="com.mystats.mystats.settingsStats.FragmentSettingsStats"
+        tools:layout="@layout/fragment_settings_stats"
         android:label="FragmentSettingsStats" >
         <action
             android:id="@+id/action_fragmentSettingsStats_to_myStatistics"

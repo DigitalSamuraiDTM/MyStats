@@ -14,6 +14,7 @@ import com.mystats.mystats.AdapterRecord
 import com.mystats.mystats.MainActivity.MainActivity
 import com.mystats.mystats.MainApplication
 import com.mystats.mystats.R
+import com.mystats.mystats.rowsData.NoteStats
 import com.mystats.mystats.rowsData.RowStat
 import moxy.MvpAppCompatFragment
 import moxy.ktx.moxyPresenter
@@ -147,7 +148,7 @@ class FragmentMyStatistics : MvpAppCompatFragment(), View.OnClickListener,
         when(p0?.id){
             R.id.fr_myStats_button_createStats ->{
                 (activity as MainActivity).EnableBars(false)
-                findNavController().navigate(R.id.action_myStatistics_to_fragmentTemplatesStats)
+                presenter.goToNewStats()
             }
             R.id.fr_myStats_button_newRecord, R.id.fr_myStats_buttonEmptyStats_addRecord ->{
                 presenter.goToNewRecord()
@@ -155,9 +156,6 @@ class FragmentMyStatistics : MvpAppCompatFragment(), View.OnClickListener,
             }
             R.id.fr_myStats_button_SettingsStats ->{
                 presenter.goToSettings();
-                findNavController().navigate(R.id.action_myStatistics_to_fragmentSettingsStats,
-                    Bundle().also { it.putString("NameStat",presenter.getNameStat())}
-                );
             }
         }
     }
@@ -197,7 +195,9 @@ class FragmentMyStatistics : MvpAppCompatFragment(), View.OnClickListener,
         return super.onOptionsItemSelected(item)
     }
 
-    fun  addNamesStatsInSubMenu(name : String){
+
+
+    fun addNamesStatsInSubMenu(name : String){
         itemStats.subMenu.add(0,0,0,name)
     }
 
@@ -235,14 +235,16 @@ class FragmentMyStatistics : MvpAppCompatFragment(), View.OnClickListener,
       override fun doActionAfterFragment(numAction: Int) {
         when(numAction){
             PresenterMyStatistics.ADD_NEW_RECORD->{
-                presenter.addRecordInRecycler(arguments?.getSerializable("NOTE") as ArrayList<RowStat>)
+                presenter.addRecordInRecycler(arguments?.getSerializable("NOTE") as NoteStats)
             }
             PresenterMyStatistics.SETTINGS_STATS_WAS_DELETE->{
                 showNewStats();
+                requireActivity().setTitle("MyStats")
+                presenter.saveLastStat(null);
                 presenter.updateMenuNamesStats()
             }
             PresenterMyStatistics.NEW_STATS_WAS_CREATED->{
-                presenter.newStatsWasCreated(arguments?.getString("NAME"),arguments?.getSerializable("COLUMNS") as ArrayList<RowStat> )
+                presenter.newStatsWasCreated(arguments?.getString("NAME"),arguments?.getSerializable("COLUMNS") as NoteStats )
                 showEmptyStats()
                 //todo после прихода от создания статистик не нужно с нуля делать запрос, нужно просто добавить только что созданную
                 //addNamesStatsInSubMenu(nameStats!!)
@@ -253,6 +255,6 @@ class FragmentMyStatistics : MvpAppCompatFragment(), View.OnClickListener,
 
 
 
-
+//TODO дата класс
 
   }

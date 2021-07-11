@@ -16,25 +16,26 @@ import kotlinx.coroutines.launch
 import moxy.InjectViewState
 import moxy.MvpPresenter
 
-//TODO красота отображение recyclerView.
 // ! не работают режимы анфокуса. Сортировка записей по дате создания
 @InjectViewState
 class PresenterMyStatistics() : MvpPresenter<MvpViewMyStatistics>(),
     InterfaceWithNewRecord,
     InterfaceWithSettingsStats,
     InterfaceWithCreatingNewStats{
-    private  var columns : ArrayList<RowStat>? = null
+    private  var columns : NoteStats? = null
     private lateinit var preferences : SharedPreferences
     private  var sizeStat : Int = 0
 
     private  var lastAction : Int = 0
     private  var nameStat : String? = null
-    private  var recyclerData =  ArrayList<ArrayList<RowStat>>()
+    private  var recyclerData =  ArrayList<NoteStats>()
     private  var recyclerAdapter : AdapterRecord;
     private var Started : Boolean = false;
+
     override fun attachView(view: MvpViewMyStatistics?) {
         super.attachView(view)
     }
+
     public fun setPreferences(pref : SharedPreferences){
         preferences = pref;
     }
@@ -57,11 +58,11 @@ class PresenterMyStatistics() : MvpPresenter<MvpViewMyStatistics>(),
             nameStat = name
         }
         viewState.showLoading();
-        recyclerData = ArrayList<ArrayList<RowStat>>()
+        recyclerData = ArrayList<NoteStats>()
         if (clearColumns){
                 columns = null
             }
-            if (columns == null || (columns != null && columns?.isEmpty() == true)) {
+            if (columns == null || (columns != null && columns?.data?.isEmpty() == true)) {
                 columns = getColumnsFromStats(nameStat!!);
             }
         FirebaseFirestore.getInstance().collection("Users")
@@ -73,13 +74,13 @@ class PresenterMyStatistics() : MvpPresenter<MvpViewMyStatistics>(),
 
                     for (i: Int in 0..snap.size() - 1) {
                         //выполняем глубокое копирование, чтобы в columns не хранились данные
-                        val noteData  = (columns!!.map { it.clone() }) as ArrayList<RowStat>
+                        val noteData  = (columns!!.data.map { it.clone() }) as ArrayList<RowStat>
 
                         //сохраняем данные в записи и запись добавляем в общий массив записей
                         for (j: Int in 0..noteData.size - 1) {
                             noteData[j].setData(snap.documents[i].get(noteData[j].getNameRow()))
                         }
-                        recyclerData.add(noteData)
+                        recyclerData.add(NoteStats(noteData, snap.documents[i].id))
                     }
                     viewState.clearRecycler()
                     recyclerAdapter.setNewData(recyclerData)
@@ -93,7 +94,7 @@ class PresenterMyStatistics() : MvpPresenter<MvpViewMyStatistics>(),
                     //todo обработка ошибок
                 }
     }
-     suspend  fun getColumnsFromStats(name : String) : ArrayList<RowStat>? {
+     suspend  fun getColumnsFromStats(name : String) : NoteStats? {
          return suspendCoroutine { continuation ->
              FirebaseFirestore.getInstance().collection("Users")
                  .document(FirebaseAuth.getInstance().currentUser?.uid.toString())
@@ -124,7 +125,7 @@ class PresenterMyStatistics() : MvpPresenter<MvpViewMyStatistics>(),
                              }
                          }
                      }
-                    continuation.resume(columns)
+                    continuation.resume(NoteStats(columns, null))
                  }.addOnFailureListener {
                      Log.d("FIRESTORE", "ops")
                  }
@@ -133,7 +134,11 @@ class PresenterMyStatistics() : MvpPresenter<MvpViewMyStatistics>(),
 
 
     fun saveLastStat(name : String?){
-        preferences.edit().putString("LastStatName",name).apply()
+        if (name==null){
+            preferences.edit().putString("LastStatName",null).apply()
+        } else{
+            preferences.edit().putString("LastStatName",name).apply()
+        }
     }
     fun loadLastStat() : String?{
         nameStat = preferences.getString("LastStatName", null);
@@ -153,7 +158,7 @@ class PresenterMyStatistics() : MvpPresenter<MvpViewMyStatistics>(),
                 }
     }
 
-    public fun addRecordInRecycler(data : ArrayList<RowStat>){
+    public fun addRecordInRecycler(data : NoteStats){
         this.recyclerData.add(0,data)
         recyclerAdapter.setNewData(recyclerData);
         viewState.showDataLayout()
@@ -170,7 +175,7 @@ class PresenterMyStatistics() : MvpPresenter<MvpViewMyStatistics>(),
         viewState.navigateToNewRecord(Bundle().also {
             it.putSerializable("MS", this as InterfaceWithNewRecord)
             it.putInt("SIZESTAT",sizeStat)
-            it.putSerializable("COLUMNS", (columns!!.map { it.clone() } as ArrayList<RowStat>))
+            it.putSerializable("COLUMNS", (NoteStats((columns!!.data.map { it.clone() } as ArrayList<RowStat>),null)))
             it.putString("NAMESTAT",nameStat)
         });
     }
@@ -179,10 +184,11 @@ class PresenterMyStatistics() : MvpPresenter<MvpViewMyStatistics>(),
     fun goToSettings() {
         viewState.navigateToSettings(Bundle().also {
             it.putSerializable("MS", this as InterfaceWithSettingsStats)
+            it.putString("NameStat",nameStat)
         })
     }
 
-    fun newStatsWasCreated(nameStat: String?, columns: ArrayList<RowStat>) {
+    fun newStatsWasCreated(nameStat: String?, columns: NoteStats) {
         recyclerData.clear()
         this.nameStat = nameStat
         this.columns = columns
