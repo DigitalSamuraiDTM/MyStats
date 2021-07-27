@@ -3,7 +3,10 @@ package com.mystats.mystats.rowsData
 import android.os.Build
 import android.os.Parcel
 import android.os.Parcelable
+import android.text.Editable
 import android.text.InputType
+import android.text.TextWatcher
+import android.view.KeyEvent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -27,11 +30,7 @@ class DateRowStat : RowStat {
 
     constructor()
 
-    override fun confirmDataInstallation() {
-        if (editData !=null){
-            data = editData?.text.toString()
-        }
-    }
+
 
     override fun drawRowToViewData(writable : Boolean): View {
         val v  = LayoutInflater.from(MainApplication.getContext()).inflate(R.layout.row_with_edit,null)
@@ -40,7 +39,19 @@ class DateRowStat : RowStat {
         editData  = v.findViewById(R.id.rowEdit_edit_data)
         editData?.inputType = InputType.TYPE_CLASS_DATETIME
         //todo можно добавить кнопочку с календарем
+        editData?.addTextChangedListener(object : TextWatcher{
+            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+            }
 
+            override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+            }
+
+            override fun afterTextChanged(p0: Editable?) {
+                if (editData?.text.toString() != ""){
+                    data = editData?.text.toString()
+                }
+            }
+        })
         if(data !=null){
             editData?.setText(data)
         }

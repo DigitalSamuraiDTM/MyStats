@@ -10,7 +10,7 @@ import android.widget.EditText
 import android.widget.Toast
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.navigation.fragment.findNavController
-import com.mystats.mystats.ErrorsSigning
+import com.mystats.mystats.sign_up.ErrorsSigning
 import com.mystats.mystats.R
 
 

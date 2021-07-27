@@ -16,6 +16,7 @@ import com.mystats.mystats.MainApplication
 import com.mystats.mystats.R
 import com.mystats.mystats.rowsData.NoteStats
 import com.mystats.mystats.rowsData.RowStat
+import kotlinx.coroutines.CoroutineScope
 import moxy.MvpAppCompatFragment
 import moxy.ktx.moxyPresenter
 import javax.inject.Inject
@@ -52,8 +53,6 @@ class FragmentMyStatistics : MvpAppCompatFragment(), View.OnClickListener,
       override fun onCreate(savedInstanceState: Bundle?) {
           //инъекция! Насыщаем поля нужными объектами
           MainApplication.getAppComponent().inject(this);
-
-
           super.onCreate(savedInstanceState)
       }
 

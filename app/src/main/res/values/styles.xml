@@ -3,4 +3,11 @@
     <style name="redButton" parent="@style/Widget.MaterialComponents.Button">
         <item name="colorPrimary">@color/red</item>
     </style>
+    <style name="redEditText" parent="@style/Widget.AppCompat.EditText">
+        <item name="colorSecondary">@color/red</item>
+    </style>
+    <style name="dialogDelete" parent="Theme.AppCompat.DayNight.Dialog.Alert">
+
+        <item name="colorOnPrimary">@color/red</item>
+    </style>
 </resources>

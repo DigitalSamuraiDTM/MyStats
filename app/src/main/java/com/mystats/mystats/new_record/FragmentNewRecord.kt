@@ -44,7 +44,6 @@ class FragmentNewRecord : Fragment() {
         buttonFinish.setOnClickListener{
             //this.activity?.window?.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
             //todo будут проверки на нулевость?
-            adapterRecord.confirmData()
             presenter.createNewRecord(dataList[0],
                 arguments?.getString("NAMESTAT").toString(),
                 arguments?.getSerializable("MS") as InterfaceWithNewRecord?
@@ -74,6 +73,6 @@ class FragmentNewRecord : Fragment() {
     public fun showError(){
         layoutData.visibility = View.VISIBLE
         layoutLoading.visibility = View.GONE
-        Toast.makeText(requireActivity(),"Something block our magic\n Check your connection and try again", Toast.LENGTH_SHORT).show();
+        Toast.makeText(requireActivity(),"Something block our magic\n Check your Internet connection and try again", Toast.LENGTH_SHORT).show();
     }
 }

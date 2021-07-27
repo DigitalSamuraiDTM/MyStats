@@ -2,7 +2,9 @@ package com.mystats.mystats.rowsData
 
 import android.annotation.SuppressLint
 import android.os.Build
+import android.text.Editable
 import android.text.InputType
+import android.text.TextWatcher
 import android.util.Log
 import android.view.KeyEvent
 import android.view.LayoutInflater
@@ -25,11 +27,7 @@ class StringRowStat : RowStat {
 
     constructor()
 
-    override fun confirmDataInstallation() {
-        if (editData != null){
-            data = editData?.text.toString()
-        }
-    }
+
 
     override fun drawRowToViewData(writable : Boolean): View {
         val v  = LayoutInflater.from(MainApplication.getContext()).inflate(R.layout.row_with_edit,null)
@@ -39,14 +37,20 @@ class StringRowStat : RowStat {
         editData?.maxLines = 50
         editData?.minLines = 1
 
-        editData?.setOnFocusChangeListener(object : View.OnFocusChangeListener{
-            override fun onFocusChange(p0: View?, hasFocus: Boolean) {
-                if (!hasFocus){
+        editData?.addTextChangedListener(object : TextWatcher{
+            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+            }
+
+            override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+            }
+
+            override fun afterTextChanged(p0: Editable?) {
+                if (editData?.text.toString() != ""){
                     data = editData?.text.toString()
                 }
             }
-
         })
+
         if(data !=null){
             editData?.setText(data)
         }
@@ -54,6 +58,7 @@ class StringRowStat : RowStat {
             editData?.isClickable = false;
             editData?.isFocusable = false
             editData?.setTextIsSelectable(false)
+            editData?.isActivated = false;
         }
         return (v)
     }

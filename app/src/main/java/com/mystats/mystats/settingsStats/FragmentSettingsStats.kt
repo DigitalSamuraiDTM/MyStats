@@ -48,4 +48,8 @@ class FragmentSettingsStats : MvpAppCompatFragment(), View.OnClickListener, Inte
         (arguments?.getSerializable("MS") as InterfaceWithSettingsStats).statsWasDelete()
         findNavController().navigate(R.id.action_fragmentSettingsStats_to_myStatistics);
     }
+
+    override fun getDocumentsId(): List<String> {
+        return arguments?.getStringArrayList("DocId")!!
+    }
 }

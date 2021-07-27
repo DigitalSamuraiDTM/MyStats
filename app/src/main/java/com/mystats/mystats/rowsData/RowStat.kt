@@ -22,7 +22,6 @@ abstract class RowStat :  Serializable, Cloneable {
 
     private lateinit var NameRow : String
 
-    public abstract fun confirmDataInstallation()
 
     public abstract fun drawRowToViewData(writable : Boolean) : View
 

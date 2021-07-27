@@ -26,11 +26,7 @@ class StateRowStat : RowStat {
 
     constructor()
 
-    override fun confirmDataInstallation() {
-        if (checkBoxData !=null){
-            data = checkBoxData?.isChecked
-        }
-    }
+
 
     override fun drawRowToViewData(writable : Boolean): View {
         val v  = LayoutInflater.from(MainApplication.getContext()).inflate(R.layout.row_with_checkbox,null)

@@ -1,5 +1,6 @@
 package com.mystats.mystats
 
+import android.util.Log
 import android.view.View
 import android.view.ViewGroup
 import android.widget.LinearLayout
@@ -31,14 +32,17 @@ class AdapterRecord : RecyclerView.Adapter<AdapterRecord.ViewHolder> {
         this.data = data
     }
 
-    public fun confirmData(){
-        for(i : Int in 0..data[0].data.size-1){
-            data[0].data[i].confirmDataInstallation()
-        }
-    }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val mainLay = LinearLayout(parent.context)
+        mainLay.setOnLongClickListener(object : View.OnLongClickListener{
+            override fun onLongClick(p0: View?): Boolean {
+                Log.d("FIRESTORE", "LONG")
+                return true
+            }
+
+        })
+
 
         val params = LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,LinearLayout.LayoutParams.WRAP_CONTENT)
         params.topMargin = 10

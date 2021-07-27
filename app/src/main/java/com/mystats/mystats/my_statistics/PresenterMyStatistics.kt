@@ -52,8 +52,7 @@ class PresenterMyStatistics() : MvpPresenter<MvpViewMyStatistics>(),
         adapter.setArrayData(recyclerData)
     }
 
-    public  fun getDataFromStats(name : String?, clearColumns : Boolean) = GlobalScope.launch(Dispatchers.Unconfined) {
-            //todo использую диспетчер, который работает вместе с главным потоком. Правильно ли это?
+    public  fun getDataFromStats(name : String?, clearColumns : Boolean) = GlobalScope.launch(Dispatchers.Main) {
         if (name!=null){
             nameStat = name
         }
@@ -185,6 +184,11 @@ class PresenterMyStatistics() : MvpPresenter<MvpViewMyStatistics>(),
         viewState.navigateToSettings(Bundle().also {
             it.putSerializable("MS", this as InterfaceWithSettingsStats)
             it.putString("NameStat",nameStat)
+            val DocIdList = ArrayList<String>()
+            recyclerData.forEach{
+                DocIdList.add(it.noteId!!)
+            }
+            it.putStringArrayList("DocId", DocIdList)
         })
     }
 
@@ -209,6 +213,7 @@ class PresenterMyStatistics() : MvpPresenter<MvpViewMyStatistics>(),
                 this.getDataFromStats(null, false)
             }
         }
+
     }
     fun getNameStat() : String? {
         return nameStat;

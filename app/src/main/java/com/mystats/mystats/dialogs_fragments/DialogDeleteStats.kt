@@ -12,15 +12,25 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.mystats.mystats.MainApplication
 import com.mystats.mystats.R
+import kotlinx.coroutines.*
 import java.lang.IllegalStateException
+import kotlin.coroutines.CoroutineContext
+import kotlin.coroutines.resume
+import kotlin.coroutines.suspendCoroutine
 
 class DialogDeleteStats(private var nameStat: String,
-private var finish : InterfaceForDialogDeleteStats) : DialogFragment() {
+private var settingsView : InterfaceForDialogDeleteStats) : DialogFragment(), CoroutineScope {
     private lateinit var editNameStats : EditText
     private lateinit var textViewDeleteStats : TextView
+
+    init {
+
+        setStyle(STYLE_NO_TITLE, R.style.dialogDelete)
+    }
+
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         return activity?.let {
-            val builder = AlertDialog.Builder(it)
+            val builder = AlertDialog.Builder(it,R.style.dialogDelete)
 
             val inflater = requireActivity().layoutInflater
 
@@ -30,23 +40,18 @@ private var finish : InterfaceForDialogDeleteStats) : DialogFragment() {
             textViewDeleteStats.setText("Enter "+nameStat+" to remove statistics")
             editNameStats = view.findViewById(R.id.dialog_deleteStats_edit_nameStats);
             editNameStats.setHint(nameStat);
-
             builder.setView(view)
                 .setPositiveButton("Delete", DialogInterface.OnClickListener{ dialogInterface, i ->
                     if (nameStat==editNameStats.text.toString()){
 
-                        (dialog as AlertDialog).getButton(AlertDialog.BUTTON_POSITIVE).isEnabled = false
-                        (dialog as AlertDialog).getButton(AlertDialog.BUTTON_NEGATIVE).isEnabled = false
-                        FirebaseFirestore.getInstance().collection("Users")
-                            .document(FirebaseAuth.getInstance().currentUser?.uid.toString())
-                            .collection("STATS").document(nameStat).delete().addOnSuccessListener {
-                                Toast.makeText(MainApplication.getContext(),nameStat+" was burned!", Toast.LENGTH_SHORT).show()
-                                // финиш - делаем колл к настройкам, чтобы они захлопнулись
-                                dialog?.dismiss()
-                                finish.FinishWhenStatsWasDelete()
-                            }.addOnFailureListener{
-                                Toast.makeText(MainApplication.getContext(),"Oops, something went wrong", Toast.LENGTH_SHORT).show()
-                            }
+                        launch {
+                            (dialog as AlertDialog).getButton(AlertDialog.BUTTON_POSITIVE).isEnabled = false
+                            (dialog as AlertDialog).getButton(AlertDialog.BUTTON_NEGATIVE).isEnabled = false
+                            deleteColumnsInStats()
+                            deleteNotesInStats()
+                            deleteStats()
+                        }
+
                     } else{
                         Toast.makeText(MainApplication.getContext(),"Enter a secret key",Toast.LENGTH_SHORT).show()
 
@@ -59,4 +64,47 @@ private var finish : InterfaceForDialogDeleteStats) : DialogFragment() {
             builder.create()
         } ?: throw IllegalStateException("act cannot be null")
     }
+    suspend fun deleteColumnsInStats() : Boolean {
+        return suspendCoroutine { continuation ->
+            FirebaseFirestore.getInstance().collection("Users")
+                .document(FirebaseAuth.getInstance().currentUser?.uid.toString())
+                .collection("STATS").document(nameStat).collection("COLUMNS")
+                .document("COLUMNS").delete().addOnSuccessListener {
+                    continuation.resume(true)
+                }.addOnFailureListener {
+                    continuation.resume(false)
+                }
+        }
+    }
+    suspend fun deleteNotesInStats() : Boolean  {
+        return suspendCoroutine {continuation->
+            val s = settingsView.getDocumentsId()
+            s.forEach {
+                FirebaseFirestore.getInstance().collection("Users")
+                    .document(FirebaseAuth.getInstance().currentUser?.uid.toString())
+                    .collection("STATS").document(nameStat).collection("DATA")
+                    .document(it).delete().addOnSuccessListener {
+
+                    }.addOnFailureListener {
+
+                    }
+            }
+            continuation.resume(true)
+        }
+    }
+    suspend fun deleteStats() : Boolean {
+        return suspendCoroutine { continuation ->
+            FirebaseFirestore.getInstance().collection("Users")
+                .document(FirebaseAuth.getInstance().currentUser?.uid.toString())
+                .collection("STATS").document(nameStat).delete().addOnSuccessListener {
+                    continuation.resume(true)
+                }.addOnFailureListener {
+                    continuation.resume(false)
+                }
+        }
+    }
+
+    override val coroutineContext: CoroutineContext
+        get() = Dispatchers.Main
+
 }

@@ -91,5 +91,6 @@ class FragmentStatsColumns : Fragment(), InterfaceForDialogNewRow {
 
     override fun getData(data: RowStat?) {
         this.data.add(data!!)
+        adapterRecycler.notifyDataSetChanged()
     }
 }

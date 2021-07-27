@@ -1,4 +1,4 @@
-package com.mystats.mystats
+package com.mystats.mystats.sign_up
 
 interface ErrorsSigning{
     companion object{
