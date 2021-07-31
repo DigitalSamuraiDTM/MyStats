@@ -16,6 +16,7 @@
         android:layout_marginStart="5dp"
         android:layout_marginEnd="5dp"
         android:gravity="center|center_horizontal|left"
+        android:longClickable="false"
         android:minWidth="60dp"
         android:paddingEnd="10dp"
         android:text=" .??????????"
@@ -25,12 +26,13 @@
 
     <EditText
         android:id="@+id/rowEdit_edit_data"
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_weight="1"
         android:ems="10"
         android:inputType="textMultiLine|textPersonName"
         android:lines="2"
+        android:longClickable="false"
         android:maxLength="2000"
         android:maxLines="100"
         android:minLines="1"

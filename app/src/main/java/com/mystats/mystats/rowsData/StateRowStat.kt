@@ -43,13 +43,14 @@ class StateRowStat : RowStat {
             checkBoxData?.isChecked = data!!
         }
         if (!writable){
-//            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-//                checkBoxData.focusable = View.NOT_FOCUSABLE
-//            } else{
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                checkBoxData?.focusable = View.NOT_FOCUSABLE
+            }
             checkBoxData?.isClickable = false;
+            checkBoxData?.isActivated = false
             checkBoxData?.isFocusable = false
+            checkBoxData?.isLongClickable = false
 
-            //checkBoxData.setTextIsSelectable(false)
 //            }
         }
         return (v)

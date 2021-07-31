@@ -54,13 +54,9 @@ class NumberRowStat : RowStat {
             editData?.setText(data.toString())
         }
         if (!writable){
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                editData?.focusable = View.NOT_FOCUSABLE
-            } else{
-                //todo попробовать оба способа и проверить за одно и focusable
-                //editData.inputType = InputType.TYPE_NULL
-                editData?.setTextIsSelectable(false)
-            }
+                editData?.isEnabled = false
+                editData?.isClickable = false
+
         }
         return (v)
     }

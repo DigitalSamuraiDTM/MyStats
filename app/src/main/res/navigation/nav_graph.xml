@@ -135,7 +135,9 @@
         tools:layout="@layout/fragment_new_record" >
         <action
             android:id="@+id/action_fragmentNewRecord_to_myStatistics"
-            app:destination="@id/myStatistics" />
+            app:destination="@id/myStatistics"
+            app:popUpToInclusive="true"
+            app:popUpTo="@+id/nav_graph"/>
     </fragment>
     <fragment
         android:id="@+id/fragmentSettingsStats"

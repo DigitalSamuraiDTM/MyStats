@@ -10,4 +10,10 @@
 
         <item name="colorOnPrimary">@color/red</item>
     </style>
+    <style name="customCheckBox" parent="@style/Widget.AppCompat.CompoundButton.CheckBox">
+        <item name="colorControlNormal">@color/red</item>
+        <item name="colorControlHighlight">@color/red</item>
+        <item name="colorControlActivated">@color/red</item>
+
+    </style>
 </resources>

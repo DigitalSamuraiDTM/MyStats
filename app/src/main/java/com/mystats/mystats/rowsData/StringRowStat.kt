@@ -55,10 +55,9 @@ class StringRowStat : RowStat {
             editData?.setText(data)
         }
         if (!writable){
-            editData?.isClickable = false;
-            editData?.isFocusable = false
-            editData?.setTextIsSelectable(false)
-            editData?.isActivated = false;
+
+            editData?.isEnabled = false
+            editData?.isClickable = false
         }
         return (v)
     }
