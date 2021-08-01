@@ -92,6 +92,7 @@
                     android:layout_marginTop="5dp"
                     android:background="@color/colorBack"
                     android:clipToPadding="false"
+                    android:layoutAnimation="@anim/animation_recycler_item"
                     app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"

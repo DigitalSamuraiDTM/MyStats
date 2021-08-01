@@ -86,9 +86,10 @@ class PresenterMyStatistics() : MvpPresenter<MvpViewMyStatistics>(),
                     if (recyclerData.size ==0){
                         viewState.showEmptyStats()
                     } else{
-                        recyclerAdapter.notifyDataSetChanged()
+                        recyclerAdapter.notifyItemRangeInserted(0,recyclerData.size)
                         viewState.showDataLayout()
                     }
+
                 }.addOnFailureListener {
                     //todo обработка ошибок
                 }

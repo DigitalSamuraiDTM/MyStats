@@ -125,6 +125,8 @@ class FragmentMyStatistics : MvpAppCompatFragment(), View.OnClickListener,
         layoutMainData.visibility = View.VISIBLE
         layoutNewStats.visibility = View.GONE
         layoutNewRecord.visibility = View.GONE
+        recyclerData.scheduleLayoutAnimation()
+
 
     }
     public override fun showNewStats(){

@@ -3,6 +3,7 @@ package com.mystats.mystats
 import android.util.Log
 import android.view.View
 import android.view.ViewGroup
+import android.view.animation.AnimationUtils
 import android.widget.LinearLayout
 import androidx.core.content.ContextCompat
 import androidx.core.content.res.ResourcesCompat
@@ -66,6 +67,7 @@ class AdapterRecord : RecyclerView.Adapter<AdapterRecord.ViewHolder> {
             lay.addView(v)
 
         }
+
     }
 
     override fun getItemCount(): Int {
@@ -78,9 +80,12 @@ class AdapterRecord : RecyclerView.Adapter<AdapterRecord.ViewHolder> {
         this.notifyDataSetChanged()
     }
 
+
+
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView){
         init {
 
         }
+
     }
 }
